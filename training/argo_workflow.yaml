@@ -144,7 +144,7 @@ spec:
         echo "All IPs have been processed."
         
         # tail -f /dev/null
-        # deepspeed --hostfile=/tmp/temp_hostfile train-bert.py --checkpoint_dir ./chk 
+        deepspeed --hostfile=/tmp/temp_hostfile train-bert.py --checkpoint_dir ./chk 
     tolerations:
     - effect: NoSchedule
       key: kubernetes.azure.com/scalesetpriority
