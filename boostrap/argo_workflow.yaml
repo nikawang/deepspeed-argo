@@ -1,0 +1,156 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: deepspeed-training-
+spec:
+  entrypoint: deepspeed-training-workflow
+  templates:
+  - name: deepspeed-training-workflow
+    steps:
+    - - name: create-deepspeed-resources
+        template: create-deepspeed-resources
+    - - name: detect-pods-fqdn
+        template: detect-pods-fqdn
+    - - name: run-deepspeed-trainingk
+        template: run-deepspeed-training
+        arguments:
+          artifacts:
+          - name: hostfile
+            from: "{{steps.detect-pods-fqdn.outputs.artifacts.hostfile}}"
+  - name: create-deepspeed-resources
+    resource:
+      action: apply
+      manifest: |
+        apiVersion: apps/v1
+        kind: Deployment
+        metadata:
+          name: deepspeed-deployment
+        spec:
+          replicas: 3
+          selector:
+            matchLabels:
+              app: deepspeed
+          template:
+            metadata:
+              labels:
+                app: deepspeed
+            spec:
+              tolerations:
+              - effect: NoSchedule
+                key: kubernetes.azure.com/scalesetpriority
+                operator: Equal
+                value: spot
+              - key: "sku"
+                operator: "Equal"
+                value: "gpu"
+                effect: "NoSchedule"
+              nodeSelector:
+                agentpool: gpuworker2
+              containers:
+              - name: deepspeed-container
+                image: nikawang.azurecr.io/argo/deepspeed-res:v7
+                command: ["sh"]
+                args: 
+                - -c
+                - /usr/sbin/sshd -D
+                ports:
+                - containerPort: 22
+                  name: ssh
+                resources:
+                  requests:
+                    nvidia.com/gpu: 1
+                  limits:
+                    nvidia.com/gpu: 1
+  - name: detect-pods-fqdn
+    container:
+      image: alpine/k8s:1.18.2
+      command: [sh]
+      args: 
+      - -c
+      - |
+        apk add --no-cache curl jq
+        STATEFULSET_NAME="deepspeed-deployment"
+        NAMESPACE=$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace)
+        while true; do
+          RUNNING_PODS=$(kubectl get pods -l app=deepspeed -n ${NAMESPACE} -o jsonpath='{.items[?(@.status.phase=="Running")].metadata.name}')
+          TOTAL_PODS=$(kubectl get deployment ${STATEFULSET_NAME} -n ${NAMESPACE} -o jsonpath='{.status.replicas}')
+          RUNNING_COUNT=$(echo ${RUNNING_PODS} | wc -w)
+          if [ "${RUNNING_COUNT}" -eq "${TOTAL_PODS}" ]; then
+            echo "所有 Pods 都处于 Running 状态。"
+            break
+          else
+            echo "等待所有 Pods 都变为 Running 状态..."
+            sleep 5
+          fi
+        done
+        kubectl get pods -l app=deepspeed -o jsonpath='{.items[*].status.podIP}' | tr -s '[[:space:]]' '\n' | awk '{print $1 " slots=1"}' > /tmp/hostfile
+        cat /tmp/hostfile
+    outputs:
+      artifacts:
+      - name: hostfile
+        path: /tmp/hostfile
+  - name: run-deepspeed-training
+    inputs:
+      artifacts:
+      - name: hostfile
+        path: /tmp/hostfile
+    volumes:
+    - name: app-volume
+      emptyDir: {}
+    initContainers:
+    - name: init-download
+      image: appropriate/curl
+      command: ["sh", "-c"]
+      args:
+      - |
+        curl -o /downloaded/app http://example.com/path/to/your/app
+        # 假设你的文件是一个可执行的应用
+        chmod +x /downloaded/app
+      volumeMounts:
+      - name: app-volume
+        mountPath: /downloaded
+    container:
+      image: nikawang.azurecr.io/argo/deepspeed-test:v6
+      volumeMounts:
+      - name: app-volume
+        mountPath: /app
+      # resources:
+      #   requests:
+      #     nvidia.com/gpu: 1
+      #   limits:
+      #     nvidia.com/gpu: 1
+      command: ["sh"]
+      args:
+      - -c 
+      - |
+        cat /tmp/hostfile
+        while IFS= read -r line
+        do
+            # 使用 awk 提取 IP 地址（假设 IP 地址在行的开头）
+            IP=$(echo $line | awk '{print $1}')
+            
+            # 执行 ssh-keyscan 并追加到 known_hosts 文件
+            ssh-keyscan -H $IP >> /root/.ssh/known_hosts
+            
+            # 检查 ssh-keyscan 命令是否成功执行
+            if [ $? -eq 0 ]; then
+                echo "Added $IP to known_hosts."
+            else
+                echo "Failed to add $IP to known_hosts."
+            fi
+        done < "/tmp/hostfile"
+
+        echo "All IPs have been processed."
+        tail -f /dev/null
+        # deepspeed --hostfile=/tmp/hostfile deepspeed_training.py --deepspeed --deepspeed_config=ds_config.json
+    tolerations:
+    - effect: NoSchedule
+      key: kubernetes.azure.com/scalesetpriority
+      operator: Equal
+      value: spot
+    - key: "sku"
+      operator: "Equal"
+      value: "gpu"
+      effect: "NoSchedule"
+    nodeSelector:
+      agentpool: gpuworker2

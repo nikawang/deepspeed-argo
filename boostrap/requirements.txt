@@ -1,0 +1,11 @@
+datasets==2.16.1
+transformers==4.36.2
+fire==0.4.0
+pytz==2021.1
+loguru==0.5.3
+sh==1.14.2
+pytest==6.2.5
+tqdm==4.62.3
+tensorboard==2.15.1
+tokenizers==0.15.0
+wandb==0.16.2

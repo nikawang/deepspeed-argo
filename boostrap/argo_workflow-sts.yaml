@@ -1,0 +1,139 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: deepspeed-training-
+spec:
+  entrypoint: deepspeed-training-workflow
+  templates:
+  - name: deepspeed-training-workflow
+    steps:
+    - - name: create-statefulset
+        template: create-statefulset
+    - - name: create-statefulset-service
+        template: create-statefulset-service
+    - - name: detect-pods-fqdn
+        template: detect-pods-fqdn
+    - - name: run-deepspeed-trainingk
+        template: run-deepspeed-training
+        arguments:
+          artifacts:
+          - name: hostfile
+            from: "{{steps.detect-pods-fqdn.outputs.artifacts.hostfile}}"
+  - name: create-statefulset
+    resource:
+      action: apply
+      manifest: |
+        apiVersion: apps/v1
+        kind: StatefulSet
+        metadata:
+          name: deepspeed-statefulset
+        spec:
+          serviceName: deepspeed-headless-service
+          replicas: 4
+          selector:
+            matchLabels:
+              app: deepspeed
+          template:
+            metadata:
+              labels:
+                app: deepspeed
+            spec:
+              tolerations:
+              - effect: NoSchedule
+                key: kubernetes.azure.com/scalesetpriority
+                operator: Equal
+                value: spot
+              - key: "sku"
+                operator: "Equal"
+                value: "gpu"
+                effect: "NoSchedule"
+              nodeSelector:
+                agentpool: gpuworker2
+              containers:
+              - name: deepspeed-container
+                image: nginx
+                ports:
+                - containerPort: 22
+                  name: ssh
+                resources:
+                  requests:
+                    nvidia.com/gpu: 1
+                  limits:
+                    nvidia.com/gpu: 1
+                volumeMounts:
+                - name: ssh-keys
+                  mountPath: /root/.ssh
+              volumes:
+              - name: ssh-keys
+                configMap:
+                  name: ssh-keys-config
+                  defaultMode: 0400
+                  items:
+                  - key: ssh-privatekey
+                    path: id_rsa
+                  - key: ssh-publickey
+                    path: id_rsa.pub
+  - name: create-statefulset-service
+    resource:
+      action: apply
+      manifest: |    
+        apiVersion: v1
+        kind: Service
+        metadata:
+          name: deepspeed-headless-service
+        spec:
+          clusterIP: None
+          selector:
+            app: deepspeed
+  - name: detect-pods-fqdn
+    container:
+      image: alpine/k8s:1.18.2
+      command: [sh]
+      args: 
+      - -c
+      - |
+        apk add --no-cache curl jq
+        STATEFULSET_NAME="deepspeed-statefulset"
+        NAMESPACE=$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace)
+        while true; do
+          RUNNING_PODS=$(kubectl get pods -l app=deepspeed -n ${NAMESPACE} -o jsonpath='{.items[?(@.status.phase=="Running")].metadata.name}')
+          TOTAL_PODS=$(kubectl get statefulset ${STATEFULSET_NAME} -n ${NAMESPACE} -o jsonpath='{.status.replicas}')
+          RUNNING_COUNT=$(echo ${RUNNING_PODS} | wc -w)
+          if [ "${RUNNING_COUNT}" -eq "${TOTAL_PODS}" ]; then
+            echo "所有 Pods 都处于 Running 状态。"
+            break
+          else
+            echo "等待所有 Pods 都变为 Running 状态..."
+            sleep 5
+          fi
+        done
+        kubectl get pods -l app=deepspeed -o jsonpath='{.items[*].status.podIP}' | tr -s '[[:space:]]' '\n' | awk '{print $1 " slots=1"}' > /tmp/hostfile
+    outputs:
+      artifacts:
+      - name: hostfile
+        path: /tmp/hostfile
+  - name: run-deepspeed-training
+    inputs:
+      artifacts:
+      - name: hostfile
+        path: /tmp/hostfile
+    container:
+      image: nikawang.azurecr.io/argo/deepspeed-test
+      command: ["sh"]
+      args:
+      - -c 
+      - |
+        deepspeed --hostfile=hostfile deepspeed_training.py --deepspeed --deepspeed_config=ds_config.json
+      volumeMounts:  # 添加 volumeMounts 配置
+      - name: ssh-keys
+        mountPath: /root/.ssh
+    volumes:  # 添加 volumes 配置
+    - name: ssh-keys
+      configMap:
+        name: ssh-keys-config
+        defaultMode: 0400
+        items:
+        - key: ssh-privatekey
+          path: id_rsa
+        - key: ssh-publickey
+          path: id_rsa.pub
