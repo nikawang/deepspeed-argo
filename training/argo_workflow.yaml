@@ -12,7 +12,7 @@ spec:
         template: create-deepspeed-resources
     - - name: detect-pods-fqdn
         template: detect-pods-fqdn
-    - - name: run-deepspeed-trainingk
+    - - name: run-deepspeed-training
         template: run-deepspeed-training
         arguments:
           artifacts:
