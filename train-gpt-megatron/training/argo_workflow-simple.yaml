@@ -1,0 +1,33 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: megatron-training-
+spec:
+  entrypoint: megatron-training-workflow
+  imagePullSecrets: 
+  - name: regcred
+  templates:
+  - name: megatron-training-workflow
+    steps:
+    - - name: run-deepspeed-training
+        template: run-deepspeed-training
+  - name: run-deepspeed-training
+    container:
+      image: nikawang.azurecr.io/deepspeed-megatron-gpt-boostrap
+      command: ["sh"]
+      args:
+      - -c 
+      - |
+        tail -f /dev/null
+        # deepspeed --hostfile=/tmp/temp_hostfile train-bert.py --checkpoint_dir ./chk 
+    tolerations:
+    - effect: NoSchedule
+      key: kubernetes.azure.com/scalesetpriority
+      operator: Equal
+      value: spot
+    - key: "sku"
+      operator: "Equal"
+      value: "gpu"
+      effect: "NoSchedule"
+    nodeSelector:
+      agentpool: a100
