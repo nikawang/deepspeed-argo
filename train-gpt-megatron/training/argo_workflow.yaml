@@ -4,6 +4,8 @@ metadata:
   generateName: deepspeed-training-
 spec:
   entrypoint: deepspeed-training-workflow
+  imagePullSecrets: 
+  - name: regcred
   onExit: exit-handler
   templates:
   - name: deepspeed-training-workflow
@@ -46,10 +48,12 @@ spec:
                 value: "gpu"
                 effect: "NoSchedule"
               nodeSelector:
-                agentpool: gpua1002
+                agentpool: a100
+              imagePullSecrets: 
+              - name: regcred
               containers:
               - name: deepspeed-container
-                image: nikawang.azurecr.io/deepspeed-megatron-gpt-boostrap:V1
+                image: nikawang.azurecr.io/deepspeed-megatron-gpt-boostrap:v1
                 command: ["sh"]
                 args: 
                 - -c
@@ -62,13 +66,14 @@ spec:
                     nvidia.com/gpu: 1
                   limits:
                     nvidia.com/gpu: 1
-                volumeMounts:
-                - name: azure
-                  mountPath: /app/chk
-              volumes:
-                - name: azure
-                  persistentVolumeClaim:
-                    claimName: chk
+              volumeMounts:
+              - mountPath: /dev/shm
+                name: dshm
+            volumes:
+            - name: dshm
+              emptyDir:
+                medium: Memory
+                sizeLimit: "50Gi" 
   - name: detect-pods-fqdn
     container:
       image: alpine/k8s:1.18.2
@@ -103,14 +108,15 @@ spec:
       - name: hostfile
         path: /tmp/hostfile
     volumes:
-    - name: azure
-      persistentVolumeClaim:
-        claimName: chk
+    - name: dshm
+      emptyDir:
+        medium: Memory
+        sizeLimit: "50Gi" 
     container:
       volumeMounts:
-      - name: azure
-        mountPath: /app/chk
-      image: nikawang.azurecr.io/deepspeed-megatron-gpt-boostrap
+      - mountPath: /dev/shm
+        name: dshm
+      image: nikawang.azurecr.io/deepspeed-megatron-gpt-boostrap:v1 
       resources:
         requests:
           nvidia.com/gpu: 1
@@ -143,8 +149,8 @@ spec:
 
         echo "All IPs have been processed."
         
-        # tail -f /dev/null
-        deepspeed --hostfile=/tmp/temp_hostfile train-bert.py --checkpoint_dir ./chk 
+        tail -f /dev/null
+        # deepspeed --hostfile=/tmp/temp_hostfile train-bert.py --checkpoint_dir ./chk 
     tolerations:
     - effect: NoSchedule
       key: kubernetes.azure.com/scalesetpriority
@@ -155,7 +161,7 @@ spec:
       value: "gpu"
       effect: "NoSchedule"
     nodeSelector:
-      agentpool: gpua1002
+      agentpool: a100
   - name: exit-handler
     steps:
     - - name: delete-deepspeed-resources
