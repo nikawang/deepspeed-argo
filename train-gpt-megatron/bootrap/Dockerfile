@@ -1,10 +1,16 @@
-FROM nikawang.azurecr.io/deepspeed-bert:v1
+FROM nikawang.azurecr.io/deepspeed-boostrap:v3
 
 WORKDIR /app
-COPY ./run-init.sh /app/run-init.sh
 
-COPY ./requirements.txt /app/requirements.txt
-RUN pip install -r /app/requirements.txt
-RUN bash /app/run-init.sh
+RUN pip install nltk==3.8.1 &&  pip install torchvision==0.16.2 && pip install wandb
 
-COPY ./run-175b.sh  /app/run-175.sh
+RUN git clone https://github.com/NVIDIA/apex.git && \
+    cd apex && \
+    python setup.py install --cuda_ext && cd - 
+
+RUN apt-get install -y iproute2
+
+RUN git clone --branch v6 --single-branch https://github.com/nikawang/Megatron-DeepSpeed.git && \
+    cd Megatron-DeepSpeed && \
+    python ./setup.py install
+

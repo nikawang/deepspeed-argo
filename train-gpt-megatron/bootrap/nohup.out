@@ -9406,3 +9406,905 @@
 #13 naming to nikawang.azurecr.io/deepspeed-megatron-gpt-boostrap:v1
 #13 naming to nikawang.azurecr.io/deepspeed-megatron-gpt-boostrap:v1 0.7s done
 #13 DONE 12.0s
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 466B done
+#1 DONE 0.1s
+
+#2 [internal] load .dockerignore
+#2 transferring context: 2B done
+#2 DONE 0.1s
+
+#3 [internal] load metadata for nikawang.azurecr.io/deepspeed-boostrap:v3
+#3 DONE 0.0s
+
+#4 [1/5] FROM nikawang.azurecr.io/deepspeed-boostrap:v3
+#4 DONE 0.0s
+
+#5 [2/5] WORKDIR /app
+#5 CACHED
+
+#6 [3/5] RUN pip install nltk==3.8.1 &&  pip install torchvision==0.16.2 && pip install wandb
+#6 CACHED
+
+#7 [4/5] RUN git clone https://github.com/NVIDIA/apex.git &&     cd apex &&     python setup.py install --cuda_ext && cd -
+#7 CACHED
+
+#8 [5/5] RUN git clone --branch v1 --single-branch https://github.com/nikawang/Megatron-DeepSpeed.git &&     cd Megatron-DeepSpeed &&     python ./setup.py install
+#8 0.514 Cloning into 'Megatron-DeepSpeed'...
+#8 1.567 Note: switching to '795910e96d5ac221bf952b72d91229471d48c1bb'.
+#8 1.567 
+#8 1.567 You are in 'detached HEAD' state. You can look around, make experimental
+#8 1.567 changes and commit them, and you can discard any commits you make in this
+#8 1.567 state without impacting any branches by switching back to a branch.
+#8 1.567 
+#8 1.567 If you want to create a new branch to retain commits you create, you may
+#8 1.567 do so (now or later) by using -c with the switch command. Example:
+#8 1.567 
+#8 1.567   git switch -c <new-branch-name>
+#8 1.567 
+#8 1.567 Or undo this operation with:
+#8 1.567 
+#8 1.567   git switch -
+#8 1.567 
+#8 1.567 Turn off this advice by setting config variable advice.detachedHead to false
+#8 1.567 
+#8 1.772 running install
+#8 1.772 /usr/lib/python3/dist-packages/setuptools/command/install.py:34: SetuptoolsDeprecationWarning: setup.py install is deprecated. Use build and pip and other standards-based tools.
+#8 1.772   warnings.warn(
+#8 1.803 /usr/lib/python3/dist-packages/setuptools/command/easy_install.py:158: EasyInstallDeprecationWarning: easy_install command is deprecated. Use build and pip and other standards-based tools.
+#8 1.803   warnings.warn(
+#8 1.882 running bdist_egg
+#8 1.883 running egg_info
+#8 1.883 creating megatron_core.egg-info
+#8 1.884 writing megatron_core.egg-info/PKG-INFO
+#8 1.884 writing dependency_links to megatron_core.egg-info/dependency_links.txt
+#8 1.884 writing requirements to megatron_core.egg-info/requires.txt
+#8 1.884 writing top-level names to megatron_core.egg-info/top_level.txt
+#8 1.885 writing manifest file 'megatron_core.egg-info/SOURCES.txt'
+#8 1.891 reading manifest file 'megatron_core.egg-info/SOURCES.txt'
+#8 1.892 reading manifest template 'MANIFEST.in'
+#8 1.893 warning: no files found matching '*.tr' under directory 'megatron/fused_kernels'
+#8 1.894 warning: no files found matching '*.cuh' under directory 'megatron/fused_kernels'
+#8 1.894 warning: no files found matching '*.cc' under directory 'megatron/fused_kernels'
+#8 1.894 adding license file 'LICENSE'
+#8 1.897 writing manifest file 'megatron_core.egg-info/SOURCES.txt'
+#8 1.897 installing library code to build/bdist.linux-x86_64/egg
+#8 1.897 running install_lib
+#8 1.897 running build_py
+#8 1.897 creating build
+#8 1.897 creating build/lib
+#8 1.898 creating build/lib/megatron
+#8 1.898 copying megatron/global_vars.py -> build/lib/megatron
+#8 1.898 copying megatron/optimizer_param_scheduler.py -> build/lib/megatron
+#8 1.898 copying megatron/microbatches.py -> build/lib/megatron
+#8 1.899 copying megatron/enums.py -> build/lib/megatron
+#8 1.899 copying megatron/__init__.py -> build/lib/megatron
+#8 1.899 copying megatron/checkpointing.py -> build/lib/megatron
+#8 1.900 copying megatron/initialize.py -> build/lib/megatron
+#8 1.900 copying megatron/utils.py -> build/lib/megatron
+#8 1.900 copying megatron/text_generation_server.py -> build/lib/megatron
+#8 1.900 copying megatron/p2p_communication.py -> build/lib/megatron
+#8 1.901 copying megatron/training.py -> build/lib/megatron
+#8 1.901 copying megatron/text_generation_utils.py -> build/lib/megatron
+#8 1.901 copying megatron/dist_signal_handler.py -> build/lib/megatron
+#8 1.902 copying megatron/memory.py -> build/lib/megatron
+#8 1.902 copying megatron/timers.py -> build/lib/megatron
+#8 1.902 copying megatron/arguments.py -> build/lib/megatron
+#8 1.903 copying megatron/indexer.py -> build/lib/megatron
+#8 1.903 creating build/lib/tools
+#8 1.903 copying tools/merge_datasets.py -> build/lib/tools
+#8 1.904 copying tools/preprocess_data_nmt.py -> build/lib/tools
+#8 1.904 copying tools/text_generation_cli.py -> build/lib/tools
+#8 1.904 copying tools/checkpoint_saver_megatron.py -> build/lib/tools
+#8 1.904 copying tools/checkpoint_util.py -> build/lib/tools
+#8 1.905 copying tools/__init__.py -> build/lib/tools
+#8 1.905 copying tools/generate_samples_gpt.py -> build/lib/tools
+#8 1.905 copying tools/checkpoint_loader_megatron.py -> build/lib/tools
+#8 1.906 copying tools/preprocess_data.py -> build/lib/tools
+#8 1.906 copying tools/linter.py -> build/lib/tools
+#8 1.906 copying tools/run_text_generation_server.py -> build/lib/tools
+#8 1.906 creating build/lib/tests
+#8 1.907 copying tests/test_megatron.py -> build/lib/tests
+#8 1.907 copying tests/__init__.py -> build/lib/tests
+#8 1.907 copying tests/conftest.py -> build/lib/tests
+#8 1.907 copying tests/run_megatron.py -> build/lib/tests
+#8 1.908 creating build/lib/megatron/optimizer
+#8 1.908 copying megatron/optimizer/optimizer.py -> build/lib/megatron/optimizer
+#8 1.908 copying megatron/optimizer/__init__.py -> build/lib/megatron/optimizer
+#8 1.908 copying megatron/optimizer/distrib_optimizer.py -> build/lib/megatron/optimizer
+#8 1.909 copying megatron/optimizer/clip_grads.py -> build/lib/megatron/optimizer
+#8 1.909 copying megatron/optimizer/grad_scaler.py -> build/lib/megatron/optimizer
+#8 1.909 creating build/lib/megatron/fused_kernels
+#8 1.909 copying megatron/fused_kernels/__init__.py -> build/lib/megatron/fused_kernels
+#8 1.910 creating build/lib/megatron/core
+#8 1.910 copying megatron/core/enums.py -> build/lib/megatron/core
+#8 1.910 copying megatron/core/parallel_state.py -> build/lib/megatron/core
+#8 1.911 copying megatron/core/__init__.py -> build/lib/megatron/core
+#8 1.911 copying megatron/core/utils.py -> build/lib/megatron/core
+#8 1.911 copying megatron/core/package_info.py -> build/lib/megatron/core
+#8 1.911 copying megatron/core/model_parallel_config.py -> build/lib/megatron/core
+#8 1.912 creating build/lib/megatron/tokenizer
+#8 1.912 copying megatron/tokenizer/gpt2_tokenization.py -> build/lib/megatron/tokenizer
+#8 1.912 copying megatron/tokenizer/__init__.py -> build/lib/megatron/tokenizer
+#8 1.913 copying megatron/tokenizer/bert_tokenization.py -> build/lib/megatron/tokenizer
+#8 1.913 copying megatron/tokenizer/tokenizer.py -> build/lib/megatron/tokenizer
+#8 1.913 creating build/lib/megatron/text_generation
+#8 1.913 copying megatron/text_generation/sampling.py -> build/lib/megatron/text_generation
+#8 1.914 copying megatron/text_generation/forward_step.py -> build/lib/megatron/text_generation
+#8 1.914 copying megatron/text_generation/beam_utils.py -> build/lib/megatron/text_generation
+#8 1.914 copying megatron/text_generation/tokenization.py -> build/lib/megatron/text_generation
+#8 1.914 copying megatron/text_generation/communication.py -> build/lib/megatron/text_generation
+#8 1.915 copying megatron/text_generation/__init__.py -> build/lib/megatron/text_generation
+#8 1.915 copying megatron/text_generation/api.py -> build/lib/megatron/text_generation
+#8 1.915 copying megatron/text_generation/generation.py -> build/lib/megatron/text_generation
+#8 1.916 creating build/lib/megatron/data
+#8 1.916 copying megatron/data/biencoder_dataset_utils.py -> build/lib/megatron/data
+#8 1.916 copying megatron/data/dataset_utils.py -> build/lib/megatron/data
+#8 1.916 copying megatron/data/data_samplers.py -> build/lib/megatron/data
+#8 1.917 copying megatron/data/ict_dataset.py -> build/lib/megatron/data
+#8 1.917 copying megatron/data/image_folder.py -> build/lib/megatron/data
+#8 1.917 copying megatron/data/autoaugment.py -> build/lib/megatron/data
+#8 1.917 copying megatron/data/indexed_dataset.py -> build/lib/megatron/data
+#8 1.918 copying megatron/data/realm_dataset_utils.py -> build/lib/megatron/data
+#8 1.918 copying megatron/data/gpt_dataset.py -> build/lib/megatron/data
+#8 1.918 copying megatron/data/realm_index.py -> build/lib/megatron/data
+#8 1.919 copying megatron/data/__init__.py -> build/lib/megatron/data
+#8 1.919 copying megatron/data/bert_dataset.py -> build/lib/megatron/data
+#8 1.919 copying megatron/data/orqa_wiki_dataset.py -> build/lib/megatron/data
+#8 1.919 copying megatron/data/blendable_dataset.py -> build/lib/megatron/data
+#8 1.920 copying megatron/data/t5_dataset.py -> build/lib/megatron/data
+#8 1.920 copying megatron/data/vit_dataset.py -> build/lib/megatron/data
+#8 1.920 creating build/lib/megatron/model
+#8 1.920 copying megatron/model/biencoder_model.py -> build/lib/megatron/model
+#8 1.921 copying megatron/model/module.py -> build/lib/megatron/model
+#8 1.921 copying megatron/model/multiple_choice.py -> build/lib/megatron/model
+#8 1.921 copying megatron/model/fused_softmax.py -> build/lib/megatron/model
+#8 1.922 copying megatron/model/classification.py -> build/lib/megatron/model
+#8 1.922 copying megatron/model/rotary_pos_embedding.py -> build/lib/megatron/model
+#8 1.922 copying megatron/model/enums.py -> build/lib/megatron/model
+#8 1.922 copying megatron/model/bert_model.py -> build/lib/megatron/model
+#8 1.923 copying megatron/model/rmsnorm.py -> build/lib/megatron/model
+#8 1.923 copying megatron/model/__init__.py -> build/lib/megatron/model
+#8 1.923 copying megatron/model/language_model.py -> build/lib/megatron/model
+#8 1.924 copying megatron/model/utils.py -> build/lib/megatron/model
+#8 1.924 copying megatron/model/fused_bias_gelu.py -> build/lib/megatron/model
+#8 1.924 copying megatron/model/fused_layer_norm.py -> build/lib/megatron/model
+#8 1.924 copying megatron/model/distributed.py -> build/lib/megatron/model
+#8 1.925 copying megatron/model/realm_model.py -> build/lib/megatron/model
+#8 1.925 copying megatron/model/t5_model.py -> build/lib/megatron/model
+#8 1.925 copying megatron/model/gpt_model.py -> build/lib/megatron/model
+#8 1.926 copying megatron/model/transformer.py -> build/lib/megatron/model
+#8 1.926 creating build/lib/megatron/fused_kernels/tests
+#8 1.926 copying megatron/fused_kernels/tests/test_fused_kernels.py -> build/lib/megatron/fused_kernels/tests
+#8 1.926 copying megatron/fused_kernels/tests/__init__.py -> build/lib/megatron/fused_kernels/tests
+#8 1.927 creating build/lib/megatron/core/models
+#8 1.927 copying megatron/core/models/__init__.py -> build/lib/megatron/core/models
+#8 1.927 creating build/lib/megatron/core/transformer
+#8 1.927 copying megatron/core/transformer/module.py -> build/lib/megatron/core/transformer
+#8 1.928 copying megatron/core/transformer/transformer_layer.py -> build/lib/megatron/core/transformer
+#8 1.928 copying megatron/core/transformer/transformer_block.py -> build/lib/megatron/core/transformer
+#8 1.928 copying megatron/core/transformer/mlp.py -> build/lib/megatron/core/transformer
+#8 1.929 copying megatron/core/transformer/attention.py -> build/lib/megatron/core/transformer
+#8 1.929 copying megatron/core/transformer/enums.py -> build/lib/megatron/core/transformer
+#8 1.929 copying megatron/core/transformer/__init__.py -> build/lib/megatron/core/transformer
+#8 1.929 copying megatron/core/transformer/utils.py -> build/lib/megatron/core/transformer
+#8 1.930 copying megatron/core/transformer/core_attention.py -> build/lib/megatron/core/transformer
+#8 1.930 copying megatron/core/transformer/transformer_config.py -> build/lib/megatron/core/transformer
+#8 1.930 creating build/lib/megatron/core/fusions
+#8 1.930 copying megatron/core/fusions/fused_softmax.py -> build/lib/megatron/core/fusions
+#8 1.931 copying megatron/core/fusions/fused_bias_dropout.py -> build/lib/megatron/core/fusions
+#8 1.931 copying megatron/core/fusions/__init__.py -> build/lib/megatron/core/fusions
+#8 1.931 copying megatron/core/fusions/fused_bias_gelu.py -> build/lib/megatron/core/fusions
+#8 1.931 copying megatron/core/fusions/fused_layer_norm.py -> build/lib/megatron/core/fusions
+#8 1.932 creating build/lib/megatron/core/pipeline_parallel
+#8 1.932 copying megatron/core/pipeline_parallel/schedules.py -> build/lib/megatron/core/pipeline_parallel
+#8 1.932 copying megatron/core/pipeline_parallel/__init__.py -> build/lib/megatron/core/pipeline_parallel
+#8 1.933 copying megatron/core/pipeline_parallel/p2p_communication.py -> build/lib/megatron/core/pipeline_parallel
+#8 1.933 creating build/lib/megatron/core/tensor_parallel
+#8 1.933 copying megatron/core/tensor_parallel/layers.py -> build/lib/megatron/core/tensor_parallel
+#8 1.934 copying megatron/core/tensor_parallel/cross_entropy.py -> build/lib/megatron/core/tensor_parallel
+#8 1.934 copying megatron/core/tensor_parallel/mappings.py -> build/lib/megatron/core/tensor_parallel
+#8 1.934 copying megatron/core/tensor_parallel/__init__.py -> build/lib/megatron/core/tensor_parallel
+#8 1.934 copying megatron/core/tensor_parallel/utils.py -> build/lib/megatron/core/tensor_parallel
+#8 1.935 copying megatron/core/tensor_parallel/data.py -> build/lib/megatron/core/tensor_parallel
+#8 1.935 copying megatron/core/tensor_parallel/random.py -> build/lib/megatron/core/tensor_parallel
+#8 1.935 creating build/lib/megatron/core/sequence_parallel
+#8 1.935 copying megatron/core/sequence_parallel/cross_entropy.py -> build/lib/megatron/core/sequence_parallel
+#8 1.936 copying megatron/core/sequence_parallel/__init__.py -> build/lib/megatron/core/sequence_parallel
+#8 1.936 creating build/lib/megatron/core/models/gpt
+#8 1.936 copying megatron/core/models/gpt/__init__.py -> build/lib/megatron/core/models/gpt
+#8 1.936 copying megatron/core/models/gpt/gpt_embedding.py -> build/lib/megatron/core/models/gpt
+#8 1.937 copying megatron/core/models/gpt/gpt_model.py -> build/lib/megatron/core/models/gpt
+#8 1.937 creating build/lib/megatron/model/vision
+#8 1.937 copying megatron/model/vision/swin_backbone.py -> build/lib/megatron/model/vision
+#8 1.938 copying megatron/model/vision/esvit_swin_backbone.py -> build/lib/megatron/model/vision
+#8 1.938 copying megatron/model/vision/classification.py -> build/lib/megatron/model/vision
+#8 1.938 copying megatron/model/vision/vit_backbone.py -> build/lib/megatron/model/vision
+#8 1.938 copying megatron/model/vision/__init__.py -> build/lib/megatron/model/vision
+#8 1.939 copying megatron/model/vision/utils.py -> build/lib/megatron/model/vision
+#8 1.939 copying megatron/model/vision/inpainting.py -> build/lib/megatron/model/vision
+#8 1.939 copying megatron/model/vision/dino.py -> build/lib/megatron/model/vision
+#8 1.940 copying megatron/model/vision/mit_backbone.py -> build/lib/megatron/model/vision
+#8 1.940 copying megatron/model/vision/knn_monitor.py -> build/lib/megatron/model/vision
+#8 1.940 creating build/lib/tools/retro
+#8 1.940 copying tools/retro/__init__.py -> build/lib/tools/retro
+#8 1.941 copying tools/retro/external_libs.py -> build/lib/tools/retro
+#8 1.941 copying tools/retro/utils.py -> build/lib/tools/retro
+#8 1.941 copying tools/retro/main.py -> build/lib/tools/retro
+#8 1.942 creating build/lib/tools/bert_embedding
+#8 1.942 copying tools/bert_embedding/embed.py -> build/lib/tools/bert_embedding
+#8 1.942 copying tools/bert_embedding/huggingface.py -> build/lib/tools/bert_embedding
+#8 1.942 copying tools/bert_embedding/__init__.py -> build/lib/tools/bert_embedding
+#8 1.943 copying tools/bert_embedding/external_libs.py -> build/lib/tools/bert_embedding
+#8 1.943 copying tools/bert_embedding/dataset.py -> build/lib/tools/bert_embedding
+#8 1.943 copying tools/bert_embedding/utils.py -> build/lib/tools/bert_embedding
+#8 1.944 creating build/lib/tools/retro/db
+#8 1.944 copying tools/retro/db/__init__.py -> build/lib/tools/retro/db
+#8 1.944 copying tools/retro/db/dataset.py -> build/lib/tools/retro/db
+#8 1.944 copying tools/retro/db/utils.py -> build/lib/tools/retro/db
+#8 1.944 copying tools/retro/db/build.py -> build/lib/tools/retro/db
+#8 1.945 creating build/lib/tools/retro/cli
+#8 1.945 copying tools/retro/cli/cli.py -> build/lib/tools/retro/cli
+#8 1.945 copying tools/retro/cli/__main__.py -> build/lib/tools/retro/cli
+#8 1.946 copying tools/retro/cli/__init__.py -> build/lib/tools/retro/cli
+#8 1.946 creating build/lib/tools/retro/query
+#8 1.946 copying tools/retro/query/query.py -> build/lib/tools/retro/query
+#8 1.946 copying tools/retro/query/retro_dataset.py -> build/lib/tools/retro/query
+#8 1.947 copying tools/retro/query/__init__.py -> build/lib/tools/retro/query
+#8 1.947 copying tools/retro/query/chunk_dataset.py -> build/lib/tools/retro/query
+#8 1.947 copying tools/retro/query/utils.py -> build/lib/tools/retro/query
+#8 1.947 creating build/lib/tools/retro/index
+#8 1.948 copying tools/retro/index/__init__.py -> build/lib/tools/retro/index
+#8 1.948 copying tools/retro/index/utils.py -> build/lib/tools/retro/index
+#8 1.948 copying tools/retro/index/build.py -> build/lib/tools/retro/index
+#8 1.948 copying tools/retro/index/factory.py -> build/lib/tools/retro/index
+#8 1.949 copying tools/retro/index/index.py -> build/lib/tools/retro/index
+#8 1.949 creating build/lib/tools/retro/index/indexes
+#8 1.949 copying tools/retro/index/indexes/faiss_base.py -> build/lib/tools/retro/index/indexes
+#8 1.949 copying tools/retro/index/indexes/faiss_par_add.py -> build/lib/tools/retro/index/indexes
+#8 1.950 copying tools/retro/index/indexes/__init__.py -> build/lib/tools/retro/index/indexes
+#8 1.950 creating build/lib/tests/models
+#8 1.950 copying tests/models/test_gpt_model.py -> build/lib/tests/models
+#8 1.950 copying tests/models/test_gpt_embedding.py -> build/lib/tests/models
+#8 1.951 copying tests/models/__init__.py -> build/lib/tests/models
+#8 1.951 creating build/lib/tests/transformer
+#8 1.951 copying tests/transformer/test_parallel_attention.py -> build/lib/tests/transformer
+#8 1.951 copying tests/transformer/test_parallel_mlp.py -> build/lib/tests/transformer
+#8 1.952 copying tests/transformer/test_core_attention.py -> build/lib/tests/transformer
+#8 1.952 copying tests/transformer/__init__.py -> build/lib/tests/transformer
+#8 1.952 copying tests/transformer/test_parallel_transformer_block.py -> build/lib/tests/transformer
+#8 1.952 copying tests/transformer/test_transformer_config.py -> build/lib/tests/transformer
+#8 1.953 copying tests/transformer/test_parallel_transformer_layer.py -> build/lib/tests/transformer
+#8 1.953 copying tests/transformer/test_module.py -> build/lib/tests/transformer
+#8 1.953 creating build/lib/tests/functional_tests
+#8 1.954 copying tests/functional_tests/__init__.py -> build/lib/tests/functional_tests
+#8 1.954 creating build/lib/tests/unit_tests
+#8 1.954 copying tests/unit_tests/test_utils.py -> build/lib/tests/unit_tests
+#8 1.954 copying tests/unit_tests/__init__.py -> build/lib/tests/unit_tests
+#8 1.955 copying tests/unit_tests/test_parallel_state.py -> build/lib/tests/unit_tests
+#8 1.955 copying tests/unit_tests/test_basic.py -> build/lib/tests/unit_tests
+#8 1.955 copying tests/unit_tests/test_utilities.py -> build/lib/tests/unit_tests
+#8 1.956 creating build/lib/tests/pipeline_parallel
+#8 1.956 copying tests/pipeline_parallel/__init__.py -> build/lib/tests/pipeline_parallel
+#8 1.956 copying tests/pipeline_parallel/test_schedules.py -> build/lib/tests/pipeline_parallel
+#8 1.956 creating build/lib/tests/functional_tests/python_test_utils
+#8 1.956 copying tests/functional_tests/python_test_utils/get_test_results_from_tensorboard_logs.py -> build/lib/tests/functional_tests/python_test_utils
+#8 1.957 copying tests/functional_tests/python_test_utils/test_resume_checkpoint_pipeline.py -> build/lib/tests/functional_tests/python_test_utils
+#8 1.957 copying tests/functional_tests/python_test_utils/__init__.py -> build/lib/tests/functional_tests/python_test_utils
+#8 1.957 copying tests/functional_tests/python_test_utils/test_ci_pipeline.py -> build/lib/tests/functional_tests/python_test_utils
+#8 1.958 copying tests/functional_tests/python_test_utils/check_slurm_job_completion.py -> build/lib/tests/functional_tests/python_test_utils
+#8 1.959 copying megatron/fused_kernels/compat.h -> build/lib/megatron/fused_kernels
+#8 1.959 copying megatron/fused_kernels/scaled_masked_softmax.cpp -> build/lib/megatron/fused_kernels
+#8 1.959 copying megatron/fused_kernels/scaled_masked_softmax.h -> build/lib/megatron/fused_kernels
+#8 1.959 copying megatron/fused_kernels/scaled_masked_softmax_cuda.cu -> build/lib/megatron/fused_kernels
+#8 1.960 copying megatron/fused_kernels/scaled_softmax.cpp -> build/lib/megatron/fused_kernels
+#8 1.960 copying megatron/fused_kernels/scaled_softmax_cuda.cu -> build/lib/megatron/fused_kernels
+#8 1.960 copying megatron/fused_kernels/scaled_upper_triang_masked_softmax.cpp -> build/lib/megatron/fused_kernels
+#8 1.961 copying megatron/fused_kernels/scaled_upper_triang_masked_softmax.h -> build/lib/megatron/fused_kernels
+#8 1.961 copying megatron/fused_kernels/scaled_upper_triang_masked_softmax_cuda.cu -> build/lib/megatron/fused_kernels
+#8 1.961 copying megatron/fused_kernels/type_shim.h -> build/lib/megatron/fused_kernels
+#8 1.961 copying megatron/data/Makefile -> build/lib/megatron/data
+#8 1.962 copying megatron/data/helpers.cpp -> build/lib/megatron/data
+#8 1.967 creating build/bdist.linux-x86_64
+#8 1.967 creating build/bdist.linux-x86_64/egg
+#8 1.967 creating build/bdist.linux-x86_64/egg/megatron
+#8 1.968 copying build/lib/megatron/global_vars.py -> build/bdist.linux-x86_64/egg/megatron
+#8 1.968 copying build/lib/megatron/optimizer_param_scheduler.py -> build/bdist.linux-x86_64/egg/megatron
+#8 1.968 copying build/lib/megatron/microbatches.py -> build/bdist.linux-x86_64/egg/megatron
+#8 1.968 creating build/bdist.linux-x86_64/egg/megatron/optimizer
+#8 1.969 copying build/lib/megatron/optimizer/optimizer.py -> build/bdist.linux-x86_64/egg/megatron/optimizer
+#8 1.969 copying build/lib/megatron/optimizer/__init__.py -> build/bdist.linux-x86_64/egg/megatron/optimizer
+#8 1.969 copying build/lib/megatron/optimizer/distrib_optimizer.py -> build/bdist.linux-x86_64/egg/megatron/optimizer
+#8 1.969 copying build/lib/megatron/optimizer/clip_grads.py -> build/bdist.linux-x86_64/egg/megatron/optimizer
+#8 1.970 copying build/lib/megatron/optimizer/grad_scaler.py -> build/bdist.linux-x86_64/egg/megatron/optimizer
+#8 1.970 copying build/lib/megatron/enums.py -> build/bdist.linux-x86_64/egg/megatron
+#8 1.970 copying build/lib/megatron/__init__.py -> build/bdist.linux-x86_64/egg/megatron
+#8 1.970 copying build/lib/megatron/checkpointing.py -> build/bdist.linux-x86_64/egg/megatron
+#8 1.971 creating build/bdist.linux-x86_64/egg/megatron/fused_kernels
+#8 1.971 copying build/lib/megatron/fused_kernels/compat.h -> build/bdist.linux-x86_64/egg/megatron/fused_kernels
+#8 1.971 copying build/lib/megatron/fused_kernels/type_shim.h -> build/bdist.linux-x86_64/egg/megatron/fused_kernels
+#8 1.971 copying build/lib/megatron/fused_kernels/scaled_upper_triang_masked_softmax_cuda.cu -> build/bdist.linux-x86_64/egg/megatron/fused_kernels
+#8 1.972 copying build/lib/megatron/fused_kernels/scaled_masked_softmax.h -> build/bdist.linux-x86_64/egg/megatron/fused_kernels
+#8 1.972 copying build/lib/megatron/fused_kernels/scaled_masked_softmax_cuda.cu -> build/bdist.linux-x86_64/egg/megatron/fused_kernels
+#8 1.972 creating build/bdist.linux-x86_64/egg/megatron/fused_kernels/tests
+#8 1.972 copying build/lib/megatron/fused_kernels/tests/test_fused_kernels.py -> build/bdist.linux-x86_64/egg/megatron/fused_kernels/tests
+#8 1.973 copying build/lib/megatron/fused_kernels/tests/__init__.py -> build/bdist.linux-x86_64/egg/megatron/fused_kernels/tests
+#8 1.973 copying build/lib/megatron/fused_kernels/__init__.py -> build/bdist.linux-x86_64/egg/megatron/fused_kernels
+#8 1.973 copying build/lib/megatron/fused_kernels/scaled_masked_softmax.cpp -> build/bdist.linux-x86_64/egg/megatron/fused_kernels
+#8 1.973 copying build/lib/megatron/fused_kernels/scaled_upper_triang_masked_softmax.cpp -> build/bdist.linux-x86_64/egg/megatron/fused_kernels
+#8 1.974 copying build/lib/megatron/fused_kernels/scaled_upper_triang_masked_softmax.h -> build/bdist.linux-x86_64/egg/megatron/fused_kernels
+#8 1.974 copying build/lib/megatron/fused_kernels/scaled_softmax.cpp -> build/bdist.linux-x86_64/egg/megatron/fused_kernels
+#8 1.974 copying build/lib/megatron/fused_kernels/scaled_softmax_cuda.cu -> build/bdist.linux-x86_64/egg/megatron/fused_kernels
+#8 1.974 copying build/lib/megatron/initialize.py -> build/bdist.linux-x86_64/egg/megatron
+#8 1.975 copying build/lib/megatron/utils.py -> build/bdist.linux-x86_64/egg/megatron
+#8 1.975 creating build/bdist.linux-x86_64/egg/megatron/core
+#8 1.975 creating build/bdist.linux-x86_64/egg/megatron/core/models
+#8 1.975 copying build/lib/megatron/core/models/__init__.py -> build/bdist.linux-x86_64/egg/megatron/core/models
+#8 1.975 creating build/bdist.linux-x86_64/egg/megatron/core/models/gpt
+#8 1.976 copying build/lib/megatron/core/models/gpt/__init__.py -> build/bdist.linux-x86_64/egg/megatron/core/models/gpt
+#8 1.976 copying build/lib/megatron/core/models/gpt/gpt_embedding.py -> build/bdist.linux-x86_64/egg/megatron/core/models/gpt
+#8 1.976 copying build/lib/megatron/core/models/gpt/gpt_model.py -> build/bdist.linux-x86_64/egg/megatron/core/models/gpt
+#8 1.976 creating build/bdist.linux-x86_64/egg/megatron/core/transformer
+#8 1.977 copying build/lib/megatron/core/transformer/module.py -> build/bdist.linux-x86_64/egg/megatron/core/transformer
+#8 1.977 copying build/lib/megatron/core/transformer/transformer_layer.py -> build/bdist.linux-x86_64/egg/megatron/core/transformer
+#8 1.977 copying build/lib/megatron/core/transformer/transformer_block.py -> build/bdist.linux-x86_64/egg/megatron/core/transformer
+#8 1.977 copying build/lib/megatron/core/transformer/mlp.py -> build/bdist.linux-x86_64/egg/megatron/core/transformer
+#8 1.977 copying build/lib/megatron/core/transformer/attention.py -> build/bdist.linux-x86_64/egg/megatron/core/transformer
+#8 1.978 copying build/lib/megatron/core/transformer/enums.py -> build/bdist.linux-x86_64/egg/megatron/core/transformer
+#8 1.978 copying build/lib/megatron/core/transformer/__init__.py -> build/bdist.linux-x86_64/egg/megatron/core/transformer
+#8 1.978 copying build/lib/megatron/core/transformer/utils.py -> build/bdist.linux-x86_64/egg/megatron/core/transformer
+#8 1.978 copying build/lib/megatron/core/transformer/core_attention.py -> build/bdist.linux-x86_64/egg/megatron/core/transformer
+#8 1.979 copying build/lib/megatron/core/transformer/transformer_config.py -> build/bdist.linux-x86_64/egg/megatron/core/transformer
+#8 1.979 creating build/bdist.linux-x86_64/egg/megatron/core/fusions
+#8 1.979 copying build/lib/megatron/core/fusions/fused_softmax.py -> build/bdist.linux-x86_64/egg/megatron/core/fusions
+#8 1.979 copying build/lib/megatron/core/fusions/fused_bias_dropout.py -> build/bdist.linux-x86_64/egg/megatron/core/fusions
+#8 1.980 copying build/lib/megatron/core/fusions/__init__.py -> build/bdist.linux-x86_64/egg/megatron/core/fusions
+#8 1.980 copying build/lib/megatron/core/fusions/fused_bias_gelu.py -> build/bdist.linux-x86_64/egg/megatron/core/fusions
+#8 1.980 copying build/lib/megatron/core/fusions/fused_layer_norm.py -> build/bdist.linux-x86_64/egg/megatron/core/fusions
+#8 1.980 copying build/lib/megatron/core/enums.py -> build/bdist.linux-x86_64/egg/megatron/core
+#8 1.980 copying build/lib/megatron/core/parallel_state.py -> build/bdist.linux-x86_64/egg/megatron/core
+#8 1.981 copying build/lib/megatron/core/__init__.py -> build/bdist.linux-x86_64/egg/megatron/core
+#8 1.981 copying build/lib/megatron/core/utils.py -> build/bdist.linux-x86_64/egg/megatron/core
+#8 1.981 creating build/bdist.linux-x86_64/egg/megatron/core/pipeline_parallel
+#8 1.981 copying build/lib/megatron/core/pipeline_parallel/schedules.py -> build/bdist.linux-x86_64/egg/megatron/core/pipeline_parallel
+#8 1.982 copying build/lib/megatron/core/pipeline_parallel/__init__.py -> build/bdist.linux-x86_64/egg/megatron/core/pipeline_parallel
+#8 1.982 copying build/lib/megatron/core/pipeline_parallel/p2p_communication.py -> build/bdist.linux-x86_64/egg/megatron/core/pipeline_parallel
+#8 1.982 creating build/bdist.linux-x86_64/egg/megatron/core/tensor_parallel
+#8 1.982 copying build/lib/megatron/core/tensor_parallel/layers.py -> build/bdist.linux-x86_64/egg/megatron/core/tensor_parallel
+#8 1.983 copying build/lib/megatron/core/tensor_parallel/cross_entropy.py -> build/bdist.linux-x86_64/egg/megatron/core/tensor_parallel
+#8 1.983 copying build/lib/megatron/core/tensor_parallel/mappings.py -> build/bdist.linux-x86_64/egg/megatron/core/tensor_parallel
+#8 1.983 copying build/lib/megatron/core/tensor_parallel/__init__.py -> build/bdist.linux-x86_64/egg/megatron/core/tensor_parallel
+#8 1.984 copying build/lib/megatron/core/tensor_parallel/utils.py -> build/bdist.linux-x86_64/egg/megatron/core/tensor_parallel
+#8 1.984 copying build/lib/megatron/core/tensor_parallel/data.py -> build/bdist.linux-x86_64/egg/megatron/core/tensor_parallel
+#8 1.984 copying build/lib/megatron/core/tensor_parallel/random.py -> build/bdist.linux-x86_64/egg/megatron/core/tensor_parallel
+#8 1.984 creating build/bdist.linux-x86_64/egg/megatron/core/sequence_parallel
+#8 1.984 copying build/lib/megatron/core/sequence_parallel/cross_entropy.py -> build/bdist.linux-x86_64/egg/megatron/core/sequence_parallel
+#8 1.985 copying build/lib/megatron/core/sequence_parallel/__init__.py -> build/bdist.linux-x86_64/egg/megatron/core/sequence_parallel
+#8 1.985 copying build/lib/megatron/core/package_info.py -> build/bdist.linux-x86_64/egg/megatron/core
+#8 1.985 copying build/lib/megatron/core/model_parallel_config.py -> build/bdist.linux-x86_64/egg/megatron/core
+#8 1.985 creating build/bdist.linux-x86_64/egg/megatron/tokenizer
+#8 1.986 copying build/lib/megatron/tokenizer/gpt2_tokenization.py -> build/bdist.linux-x86_64/egg/megatron/tokenizer
+#8 1.986 copying build/lib/megatron/tokenizer/__init__.py -> build/bdist.linux-x86_64/egg/megatron/tokenizer
+#8 1.986 copying build/lib/megatron/tokenizer/bert_tokenization.py -> build/bdist.linux-x86_64/egg/megatron/tokenizer
+#8 1.986 copying build/lib/megatron/tokenizer/tokenizer.py -> build/bdist.linux-x86_64/egg/megatron/tokenizer
+#8 1.987 copying build/lib/megatron/text_generation_server.py -> build/bdist.linux-x86_64/egg/megatron
+#8 1.987 creating build/bdist.linux-x86_64/egg/megatron/text_generation
+#8 1.987 copying build/lib/megatron/text_generation/sampling.py -> build/bdist.linux-x86_64/egg/megatron/text_generation
+#8 1.987 copying build/lib/megatron/text_generation/forward_step.py -> build/bdist.linux-x86_64/egg/megatron/text_generation
+#8 1.988 copying build/lib/megatron/text_generation/beam_utils.py -> build/bdist.linux-x86_64/egg/megatron/text_generation
+#8 1.988 copying build/lib/megatron/text_generation/tokenization.py -> build/bdist.linux-x86_64/egg/megatron/text_generation
+#8 1.988 copying build/lib/megatron/text_generation/communication.py -> build/bdist.linux-x86_64/egg/megatron/text_generation
+#8 1.988 copying build/lib/megatron/text_generation/__init__.py -> build/bdist.linux-x86_64/egg/megatron/text_generation
+#8 1.989 copying build/lib/megatron/text_generation/api.py -> build/bdist.linux-x86_64/egg/megatron/text_generation
+#8 1.989 copying build/lib/megatron/text_generation/generation.py -> build/bdist.linux-x86_64/egg/megatron/text_generation
+#8 1.989 copying build/lib/megatron/p2p_communication.py -> build/bdist.linux-x86_64/egg/megatron
+#8 1.989 copying build/lib/megatron/training.py -> build/bdist.linux-x86_64/egg/megatron
+#8 1.990 copying build/lib/megatron/text_generation_utils.py -> build/bdist.linux-x86_64/egg/megatron
+#8 1.995 copying build/lib/megatron/dist_signal_handler.py -> build/bdist.linux-x86_64/egg/megatron
+#8 1.995 copying build/lib/megatron/memory.py -> build/bdist.linux-x86_64/egg/megatron
+#8 1.995 copying build/lib/megatron/timers.py -> build/bdist.linux-x86_64/egg/megatron
+#8 1.995 copying build/lib/megatron/arguments.py -> build/bdist.linux-x86_64/egg/megatron
+#8 1.995 creating build/bdist.linux-x86_64/egg/megatron/data
+#8 1.995 copying build/lib/megatron/data/biencoder_dataset_utils.py -> build/bdist.linux-x86_64/egg/megatron/data
+#8 1.995 copying build/lib/megatron/data/dataset_utils.py -> build/bdist.linux-x86_64/egg/megatron/data
+#8 1.995 copying build/lib/megatron/data/Makefile -> build/bdist.linux-x86_64/egg/megatron/data
+#8 1.995 copying build/lib/megatron/data/data_samplers.py -> build/bdist.linux-x86_64/egg/megatron/data
+#8 1.995 copying build/lib/megatron/data/ict_dataset.py -> build/bdist.linux-x86_64/egg/megatron/data
+#8 1.995 copying build/lib/megatron/data/image_folder.py -> build/bdist.linux-x86_64/egg/megatron/data
+#8 1.995 copying build/lib/megatron/data/autoaugment.py -> build/bdist.linux-x86_64/egg/megatron/data
+#8 1.995 copying build/lib/megatron/data/indexed_dataset.py -> build/bdist.linux-x86_64/egg/megatron/data
+#8 1.995 copying build/lib/megatron/data/realm_dataset_utils.py -> build/bdist.linux-x86_64/egg/megatron/data
+#8 1.995 copying build/lib/megatron/data/gpt_dataset.py -> build/bdist.linux-x86_64/egg/megatron/data
+#8 1.995 copying build/lib/megatron/data/realm_index.py -> build/bdist.linux-x86_64/egg/megatron/data
+#8 1.995 copying build/lib/megatron/data/__init__.py -> build/bdist.linux-x86_64/egg/megatron/data
+#8 1.995 copying build/lib/megatron/data/bert_dataset.py -> build/bdist.linux-x86_64/egg/megatron/data
+#8 1.995 copying build/lib/megatron/data/orqa_wiki_dataset.py -> build/bdist.linux-x86_64/egg/megatron/data
+#8 1.995 copying build/lib/megatron/data/blendable_dataset.py -> build/bdist.linux-x86_64/egg/megatron/data
+#8 1.995 copying build/lib/megatron/data/helpers.cpp -> build/bdist.linux-x86_64/egg/megatron/data
+#8 1.996 copying build/lib/megatron/data/t5_dataset.py -> build/bdist.linux-x86_64/egg/megatron/data
+#8 1.996 copying build/lib/megatron/data/vit_dataset.py -> build/bdist.linux-x86_64/egg/megatron/data
+#8 1.996 copying build/lib/megatron/indexer.py -> build/bdist.linux-x86_64/egg/megatron
+#8 1.997 creating build/bdist.linux-x86_64/egg/megatron/model
+#8 1.997 copying build/lib/megatron/model/biencoder_model.py -> build/bdist.linux-x86_64/egg/megatron/model
+#8 1.997 copying build/lib/megatron/model/module.py -> build/bdist.linux-x86_64/egg/megatron/model
+#8 1.997 creating build/bdist.linux-x86_64/egg/megatron/model/vision
+#8 1.998 copying build/lib/megatron/model/vision/swin_backbone.py -> build/bdist.linux-x86_64/egg/megatron/model/vision
+#8 1.998 copying build/lib/megatron/model/vision/esvit_swin_backbone.py -> build/bdist.linux-x86_64/egg/megatron/model/vision
+#8 1.998 copying build/lib/megatron/model/vision/classification.py -> build/bdist.linux-x86_64/egg/megatron/model/vision
+#8 1.999 copying build/lib/megatron/model/vision/vit_backbone.py -> build/bdist.linux-x86_64/egg/megatron/model/vision
+#8 1.999 copying build/lib/megatron/model/vision/__init__.py -> build/bdist.linux-x86_64/egg/megatron/model/vision
+#8 1.999 copying build/lib/megatron/model/vision/utils.py -> build/bdist.linux-x86_64/egg/megatron/model/vision
+#8 2.000 copying build/lib/megatron/model/vision/inpainting.py -> build/bdist.linux-x86_64/egg/megatron/model/vision
+#8 2.000 copying build/lib/megatron/model/vision/dino.py -> build/bdist.linux-x86_64/egg/megatron/model/vision
+#8 2.000 copying build/lib/megatron/model/vision/mit_backbone.py -> build/bdist.linux-x86_64/egg/megatron/model/vision
+#8 2.001 copying build/lib/megatron/model/vision/knn_monitor.py -> build/bdist.linux-x86_64/egg/megatron/model/vision
+#8 2.001 copying build/lib/megatron/model/multiple_choice.py -> build/bdist.linux-x86_64/egg/megatron/model
+#8 2.001 copying build/lib/megatron/model/fused_softmax.py -> build/bdist.linux-x86_64/egg/megatron/model
+#8 2.002 copying build/lib/megatron/model/classification.py -> build/bdist.linux-x86_64/egg/megatron/model
+#8 2.002 copying build/lib/megatron/model/rotary_pos_embedding.py -> build/bdist.linux-x86_64/egg/megatron/model
+#8 2.002 copying build/lib/megatron/model/enums.py -> build/bdist.linux-x86_64/egg/megatron/model
+#8 2.003 copying build/lib/megatron/model/bert_model.py -> build/bdist.linux-x86_64/egg/megatron/model
+#8 2.003 copying build/lib/megatron/model/rmsnorm.py -> build/bdist.linux-x86_64/egg/megatron/model
+#8 2.003 copying build/lib/megatron/model/__init__.py -> build/bdist.linux-x86_64/egg/megatron/model
+#8 2.003 copying build/lib/megatron/model/language_model.py -> build/bdist.linux-x86_64/egg/megatron/model
+#8 2.004 copying build/lib/megatron/model/utils.py -> build/bdist.linux-x86_64/egg/megatron/model
+#8 2.004 copying build/lib/megatron/model/fused_bias_gelu.py -> build/bdist.linux-x86_64/egg/megatron/model
+#8 2.004 copying build/lib/megatron/model/fused_layer_norm.py -> build/bdist.linux-x86_64/egg/megatron/model
+#8 2.004 copying build/lib/megatron/model/distributed.py -> build/bdist.linux-x86_64/egg/megatron/model
+#8 2.005 copying build/lib/megatron/model/realm_model.py -> build/bdist.linux-x86_64/egg/megatron/model
+#8 2.005 copying build/lib/megatron/model/t5_model.py -> build/bdist.linux-x86_64/egg/megatron/model
+#8 2.005 copying build/lib/megatron/model/gpt_model.py -> build/bdist.linux-x86_64/egg/megatron/model
+#8 2.005 copying build/lib/megatron/model/transformer.py -> build/bdist.linux-x86_64/egg/megatron/model
+#8 2.006 creating build/bdist.linux-x86_64/egg/tools
+#8 2.006 creating build/bdist.linux-x86_64/egg/tools/retro
+#8 2.006 creating build/bdist.linux-x86_64/egg/tools/retro/db
+#8 2.006 copying build/lib/tools/retro/db/__init__.py -> build/bdist.linux-x86_64/egg/tools/retro/db
+#8 2.007 copying build/lib/tools/retro/db/dataset.py -> build/bdist.linux-x86_64/egg/tools/retro/db
+#8 2.007 copying build/lib/tools/retro/db/utils.py -> build/bdist.linux-x86_64/egg/tools/retro/db
+#8 2.007 copying build/lib/tools/retro/db/build.py -> build/bdist.linux-x86_64/egg/tools/retro/db
+#8 2.008 creating build/bdist.linux-x86_64/egg/tools/retro/cli
+#8 2.008 copying build/lib/tools/retro/cli/cli.py -> build/bdist.linux-x86_64/egg/tools/retro/cli
+#8 2.008 copying build/lib/tools/retro/cli/__main__.py -> build/bdist.linux-x86_64/egg/tools/retro/cli
+#8 2.008 copying build/lib/tools/retro/cli/__init__.py -> build/bdist.linux-x86_64/egg/tools/retro/cli
+#8 2.009 copying build/lib/tools/retro/__init__.py -> build/bdist.linux-x86_64/egg/tools/retro
+#8 2.009 copying build/lib/tools/retro/external_libs.py -> build/bdist.linux-x86_64/egg/tools/retro
+#8 2.009 creating build/bdist.linux-x86_64/egg/tools/retro/query
+#8 2.009 copying build/lib/tools/retro/query/query.py -> build/bdist.linux-x86_64/egg/tools/retro/query
+#8 2.009 copying build/lib/tools/retro/query/retro_dataset.py -> build/bdist.linux-x86_64/egg/tools/retro/query
+#8 2.010 copying build/lib/tools/retro/query/__init__.py -> build/bdist.linux-x86_64/egg/tools/retro/query
+#8 2.010 copying build/lib/tools/retro/query/chunk_dataset.py -> build/bdist.linux-x86_64/egg/tools/retro/query
+#8 2.010 copying build/lib/tools/retro/query/utils.py -> build/bdist.linux-x86_64/egg/tools/retro/query
+#8 2.010 copying build/lib/tools/retro/utils.py -> build/bdist.linux-x86_64/egg/tools/retro
+#8 2.011 creating build/bdist.linux-x86_64/egg/tools/retro/index
+#8 2.011 creating build/bdist.linux-x86_64/egg/tools/retro/index/indexes
+#8 2.011 copying build/lib/tools/retro/index/indexes/faiss_base.py -> build/bdist.linux-x86_64/egg/tools/retro/index/indexes
+#8 2.011 copying build/lib/tools/retro/index/indexes/faiss_par_add.py -> build/bdist.linux-x86_64/egg/tools/retro/index/indexes
+#8 2.012 copying build/lib/tools/retro/index/indexes/__init__.py -> build/bdist.linux-x86_64/egg/tools/retro/index/indexes
+#8 2.012 copying build/lib/tools/retro/index/__init__.py -> build/bdist.linux-x86_64/egg/tools/retro/index
+#8 2.012 copying build/lib/tools/retro/index/utils.py -> build/bdist.linux-x86_64/egg/tools/retro/index
+#8 2.013 copying build/lib/tools/retro/index/build.py -> build/bdist.linux-x86_64/egg/tools/retro/index
+#8 2.013 copying build/lib/tools/retro/index/factory.py -> build/bdist.linux-x86_64/egg/tools/retro/index
+#8 2.013 copying build/lib/tools/retro/index/index.py -> build/bdist.linux-x86_64/egg/tools/retro/index
+#8 2.013 copying build/lib/tools/retro/main.py -> build/bdist.linux-x86_64/egg/tools/retro
+#8 2.014 copying build/lib/tools/merge_datasets.py -> build/bdist.linux-x86_64/egg/tools
+#8 2.014 copying build/lib/tools/preprocess_data_nmt.py -> build/bdist.linux-x86_64/egg/tools
+#8 2.014 copying build/lib/tools/text_generation_cli.py -> build/bdist.linux-x86_64/egg/tools
+#8 2.014 copying build/lib/tools/checkpoint_saver_megatron.py -> build/bdist.linux-x86_64/egg/tools
+#8 2.015 copying build/lib/tools/checkpoint_util.py -> build/bdist.linux-x86_64/egg/tools
+#8 2.015 copying build/lib/tools/__init__.py -> build/bdist.linux-x86_64/egg/tools
+#8 2.015 copying build/lib/tools/generate_samples_gpt.py -> build/bdist.linux-x86_64/egg/tools
+#8 2.015 copying build/lib/tools/checkpoint_loader_megatron.py -> build/bdist.linux-x86_64/egg/tools
+#8 2.016 copying build/lib/tools/preprocess_data.py -> build/bdist.linux-x86_64/egg/tools
+#8 2.016 copying build/lib/tools/linter.py -> build/bdist.linux-x86_64/egg/tools
+#8 2.016 copying build/lib/tools/run_text_generation_server.py -> build/bdist.linux-x86_64/egg/tools
+#8 2.016 creating build/bdist.linux-x86_64/egg/tools/bert_embedding
+#8 2.017 copying build/lib/tools/bert_embedding/embed.py -> build/bdist.linux-x86_64/egg/tools/bert_embedding
+#8 2.017 copying build/lib/tools/bert_embedding/huggingface.py -> build/bdist.linux-x86_64/egg/tools/bert_embedding
+#8 2.017 copying build/lib/tools/bert_embedding/__init__.py -> build/bdist.linux-x86_64/egg/tools/bert_embedding
+#8 2.017 copying build/lib/tools/bert_embedding/external_libs.py -> build/bdist.linux-x86_64/egg/tools/bert_embedding
+#8 2.018 copying build/lib/tools/bert_embedding/dataset.py -> build/bdist.linux-x86_64/egg/tools/bert_embedding
+#8 2.018 copying build/lib/tools/bert_embedding/utils.py -> build/bdist.linux-x86_64/egg/tools/bert_embedding
+#8 2.018 creating build/bdist.linux-x86_64/egg/tests
+#8 2.018 creating build/bdist.linux-x86_64/egg/tests/models
+#8 2.018 copying build/lib/tests/models/test_gpt_model.py -> build/bdist.linux-x86_64/egg/tests/models
+#8 2.019 copying build/lib/tests/models/test_gpt_embedding.py -> build/bdist.linux-x86_64/egg/tests/models
+#8 2.019 copying build/lib/tests/models/__init__.py -> build/bdist.linux-x86_64/egg/tests/models
+#8 2.019 copying build/lib/tests/test_megatron.py -> build/bdist.linux-x86_64/egg/tests
+#8 2.020 creating build/bdist.linux-x86_64/egg/tests/transformer
+#8 2.020 copying build/lib/tests/transformer/test_parallel_attention.py -> build/bdist.linux-x86_64/egg/tests/transformer
+#8 2.020 copying build/lib/tests/transformer/test_parallel_mlp.py -> build/bdist.linux-x86_64/egg/tests/transformer
+#8 2.020 copying build/lib/tests/transformer/test_core_attention.py -> build/bdist.linux-x86_64/egg/tests/transformer
+#8 2.020 copying build/lib/tests/transformer/__init__.py -> build/bdist.linux-x86_64/egg/tests/transformer
+#8 2.021 copying build/lib/tests/transformer/test_parallel_transformer_block.py -> build/bdist.linux-x86_64/egg/tests/transformer
+#8 2.021 copying build/lib/tests/transformer/test_transformer_config.py -> build/bdist.linux-x86_64/egg/tests/transformer
+#8 2.021 copying build/lib/tests/transformer/test_parallel_transformer_layer.py -> build/bdist.linux-x86_64/egg/tests/transformer
+#8 2.021 copying build/lib/tests/transformer/test_module.py -> build/bdist.linux-x86_64/egg/tests/transformer
+#8 2.022 creating build/bdist.linux-x86_64/egg/tests/functional_tests
+#8 2.022 copying build/lib/tests/functional_tests/__init__.py -> build/bdist.linux-x86_64/egg/tests/functional_tests
+#8 2.022 creating build/bdist.linux-x86_64/egg/tests/functional_tests/python_test_utils
+#8 2.022 copying build/lib/tests/functional_tests/python_test_utils/get_test_results_from_tensorboard_logs.py -> build/bdist.linux-x86_64/egg/tests/functional_tests/python_test_utils
+#8 2.022 copying build/lib/tests/functional_tests/python_test_utils/test_resume_checkpoint_pipeline.py -> build/bdist.linux-x86_64/egg/tests/functional_tests/python_test_utils
+#8 2.023 copying build/lib/tests/functional_tests/python_test_utils/__init__.py -> build/bdist.linux-x86_64/egg/tests/functional_tests/python_test_utils
+#8 2.023 copying build/lib/tests/functional_tests/python_test_utils/test_ci_pipeline.py -> build/bdist.linux-x86_64/egg/tests/functional_tests/python_test_utils
+#8 2.023 copying build/lib/tests/functional_tests/python_test_utils/check_slurm_job_completion.py -> build/bdist.linux-x86_64/egg/tests/functional_tests/python_test_utils
+#8 2.023 copying build/lib/tests/__init__.py -> build/bdist.linux-x86_64/egg/tests
+#8 2.024 creating build/bdist.linux-x86_64/egg/tests/unit_tests
+#8 2.024 copying build/lib/tests/unit_tests/test_utils.py -> build/bdist.linux-x86_64/egg/tests/unit_tests
+#8 2.024 copying build/lib/tests/unit_tests/__init__.py -> build/bdist.linux-x86_64/egg/tests/unit_tests
+#8 2.024 copying build/lib/tests/unit_tests/test_parallel_state.py -> build/bdist.linux-x86_64/egg/tests/unit_tests
+#8 2.025 copying build/lib/tests/unit_tests/test_basic.py -> build/bdist.linux-x86_64/egg/tests/unit_tests
+#8 2.025 copying build/lib/tests/unit_tests/test_utilities.py -> build/bdist.linux-x86_64/egg/tests/unit_tests
+#8 2.025 copying build/lib/tests/conftest.py -> build/bdist.linux-x86_64/egg/tests
+#8 2.025 copying build/lib/tests/run_megatron.py -> build/bdist.linux-x86_64/egg/tests
+#8 2.026 creating build/bdist.linux-x86_64/egg/tests/pipeline_parallel
+#8 2.026 copying build/lib/tests/pipeline_parallel/__init__.py -> build/bdist.linux-x86_64/egg/tests/pipeline_parallel
+#8 2.026 copying build/lib/tests/pipeline_parallel/test_schedules.py -> build/bdist.linux-x86_64/egg/tests/pipeline_parallel
+#8 2.027 byte-compiling build/bdist.linux-x86_64/egg/megatron/global_vars.py to global_vars.cpython-310.pyc
+#8 2.028 byte-compiling build/bdist.linux-x86_64/egg/megatron/optimizer_param_scheduler.py to optimizer_param_scheduler.cpython-310.pyc
+#8 2.030 byte-compiling build/bdist.linux-x86_64/egg/megatron/microbatches.py to microbatches.cpython-310.pyc
+#8 2.031 byte-compiling build/bdist.linux-x86_64/egg/megatron/optimizer/optimizer.py to optimizer.cpython-310.pyc
+#8 2.035 byte-compiling build/bdist.linux-x86_64/egg/megatron/optimizer/__init__.py to __init__.cpython-310.pyc
+#8 2.036 byte-compiling build/bdist.linux-x86_64/egg/megatron/optimizer/distrib_optimizer.py to distrib_optimizer.cpython-310.pyc
+#8 2.041 byte-compiling build/bdist.linux-x86_64/egg/megatron/optimizer/clip_grads.py to clip_grads.cpython-310.pyc
+#8 2.041 byte-compiling build/bdist.linux-x86_64/egg/megatron/optimizer/grad_scaler.py to grad_scaler.cpython-310.pyc
+#8 2.041 byte-compiling build/bdist.linux-x86_64/egg/megatron/enums.py to enums.cpython-310.pyc
+#8 2.042 byte-compiling build/bdist.linux-x86_64/egg/megatron/__init__.py to __init__.cpython-310.pyc
+#8 2.042 byte-compiling build/bdist.linux-x86_64/egg/megatron/checkpointing.py to checkpointing.cpython-310.pyc
+#8 2.047 byte-compiling build/bdist.linux-x86_64/egg/megatron/fused_kernels/tests/test_fused_kernels.py to test_fused_kernels.cpython-310.pyc
+#8 2.049 byte-compiling build/bdist.linux-x86_64/egg/megatron/fused_kernels/tests/__init__.py to __init__.cpython-310.pyc
+#8 2.050 byte-compiling build/bdist.linux-x86_64/egg/megatron/fused_kernels/__init__.py to __init__.cpython-310.pyc
+#8 2.051 byte-compiling build/bdist.linux-x86_64/egg/megatron/initialize.py to initialize.cpython-310.pyc
+#8 2.053 byte-compiling build/bdist.linux-x86_64/egg/megatron/utils.py to utils.cpython-310.pyc
+#8 2.056 byte-compiling build/bdist.linux-x86_64/egg/megatron/core/models/__init__.py to __init__.cpython-310.pyc
+#8 2.057 byte-compiling build/bdist.linux-x86_64/egg/megatron/core/models/gpt/__init__.py to __init__.cpython-310.pyc
+#8 2.057 byte-compiling build/bdist.linux-x86_64/egg/megatron/core/models/gpt/gpt_embedding.py to gpt_embedding.cpython-310.pyc
+#8 2.058 byte-compiling build/bdist.linux-x86_64/egg/megatron/core/models/gpt/gpt_model.py to gpt_model.cpython-310.pyc
+#8 2.059 byte-compiling build/bdist.linux-x86_64/egg/megatron/core/transformer/module.py to module.cpython-310.pyc
+#8 2.060 byte-compiling build/bdist.linux-x86_64/egg/megatron/core/transformer/transformer_layer.py to transformer_layer.cpython-310.pyc
+#8 2.061 byte-compiling build/bdist.linux-x86_64/egg/megatron/core/transformer/transformer_block.py to transformer_block.cpython-310.pyc
+#8 2.062 byte-compiling build/bdist.linux-x86_64/egg/megatron/core/transformer/mlp.py to mlp.cpython-310.pyc
+#8 2.063 byte-compiling build/bdist.linux-x86_64/egg/megatron/core/transformer/attention.py to attention.cpython-310.pyc
+#8 2.064 byte-compiling build/bdist.linux-x86_64/egg/megatron/core/transformer/enums.py to enums.cpython-310.pyc
+#8 2.065 byte-compiling build/bdist.linux-x86_64/egg/megatron/core/transformer/__init__.py to __init__.cpython-310.pyc
+#8 2.065 byte-compiling build/bdist.linux-x86_64/egg/megatron/core/transformer/utils.py to utils.cpython-310.pyc
+#8 2.066 byte-compiling build/bdist.linux-x86_64/egg/megatron/core/transformer/core_attention.py to core_attention.cpython-310.pyc
+#8 2.067 byte-compiling build/bdist.linux-x86_64/egg/megatron/core/transformer/transformer_config.py to transformer_config.cpython-310.pyc
+#8 2.068 byte-compiling build/bdist.linux-x86_64/egg/megatron/core/fusions/fused_softmax.py to fused_softmax.cpython-310.pyc
+#8 2.069 byte-compiling build/bdist.linux-x86_64/egg/megatron/core/fusions/fused_bias_dropout.py to fused_bias_dropout.cpython-310.pyc
+#8 2.070 byte-compiling build/bdist.linux-x86_64/egg/megatron/core/fusions/__init__.py to __init__.cpython-310.pyc
+#8 2.070 byte-compiling build/bdist.linux-x86_64/egg/megatron/core/fusions/fused_bias_gelu.py to fused_bias_gelu.cpython-310.pyc
+#8 2.071 byte-compiling build/bdist.linux-x86_64/egg/megatron/core/fusions/fused_layer_norm.py to fused_layer_norm.cpython-310.pyc
+#8 2.071 byte-compiling build/bdist.linux-x86_64/egg/megatron/core/enums.py to enums.cpython-310.pyc
+#8 2.072 byte-compiling build/bdist.linux-x86_64/egg/megatron/core/parallel_state.py to parallel_state.cpython-310.pyc
+#8 2.075 byte-compiling build/bdist.linux-x86_64/egg/megatron/core/__init__.py to __init__.cpython-310.pyc
+#8 2.076 byte-compiling build/bdist.linux-x86_64/egg/megatron/core/utils.py to utils.cpython-310.pyc
+#8 2.077 byte-compiling build/bdist.linux-x86_64/egg/megatron/core/pipeline_parallel/schedules.py to schedules.cpython-310.pyc
+#8 2.082 byte-compiling build/bdist.linux-x86_64/egg/megatron/core/pipeline_parallel/__init__.py to __init__.cpython-310.pyc
+#8 2.082 byte-compiling build/bdist.linux-x86_64/egg/megatron/core/pipeline_parallel/p2p_communication.py to p2p_communication.cpython-310.pyc
+#8 2.085 byte-compiling build/bdist.linux-x86_64/egg/megatron/core/tensor_parallel/layers.py to layers.cpython-310.pyc
+#8 2.088 byte-compiling build/bdist.linux-x86_64/egg/megatron/core/tensor_parallel/cross_entropy.py to cross_entropy.cpython-310.pyc
+#8 2.089 byte-compiling build/bdist.linux-x86_64/egg/megatron/core/tensor_parallel/mappings.py to mappings.cpython-310.pyc
+#8 2.090 byte-compiling build/bdist.linux-x86_64/egg/megatron/core/tensor_parallel/__init__.py to __init__.cpython-310.pyc
+#8 2.091 byte-compiling build/bdist.linux-x86_64/egg/megatron/core/tensor_parallel/utils.py to utils.cpython-310.pyc
+#8 2.092 byte-compiling build/bdist.linux-x86_64/egg/megatron/core/tensor_parallel/data.py to data.cpython-310.pyc
+#8 2.093 byte-compiling build/bdist.linux-x86_64/egg/megatron/core/tensor_parallel/random.py to random.cpython-310.pyc
+#8 2.094 byte-compiling build/bdist.linux-x86_64/egg/megatron/core/sequence_parallel/cross_entropy.py to cross_entropy.cpython-310.pyc
+#8 2.095 byte-compiling build/bdist.linux-x86_64/egg/megatron/core/sequence_parallel/__init__.py to __init__.cpython-310.pyc
+#8 2.095 byte-compiling build/bdist.linux-x86_64/egg/megatron/core/package_info.py to package_info.cpython-310.pyc
+#8 2.096 byte-compiling build/bdist.linux-x86_64/egg/megatron/core/model_parallel_config.py to model_parallel_config.cpython-310.pyc
+#8 2.097 byte-compiling build/bdist.linux-x86_64/egg/megatron/tokenizer/gpt2_tokenization.py to gpt2_tokenization.cpython-310.pyc
+#8 2.099 byte-compiling build/bdist.linux-x86_64/egg/megatron/tokenizer/__init__.py to __init__.cpython-310.pyc
+#8 2.099 byte-compiling build/bdist.linux-x86_64/egg/megatron/tokenizer/bert_tokenization.py to bert_tokenization.cpython-310.pyc
+#8 2.101 byte-compiling build/bdist.linux-x86_64/egg/megatron/tokenizer/tokenizer.py to tokenizer.cpython-310.pyc
+#8 2.105 byte-compiling build/bdist.linux-x86_64/egg/megatron/text_generation_server.py to text_generation_server.cpython-310.pyc
+#8 2.106 byte-compiling build/bdist.linux-x86_64/egg/megatron/text_generation/sampling.py to sampling.cpython-310.pyc
+#8 2.107 byte-compiling build/bdist.linux-x86_64/egg/megatron/text_generation/forward_step.py to forward_step.cpython-310.pyc
+#8 2.109 byte-compiling build/bdist.linux-x86_64/egg/megatron/text_generation/beam_utils.py to beam_utils.cpython-310.pyc
+#8 2.109 byte-compiling build/bdist.linux-x86_64/egg/megatron/text_generation/tokenization.py to tokenization.cpython-310.pyc
+#8 2.110 byte-compiling build/bdist.linux-x86_64/egg/megatron/text_generation/communication.py to communication.cpython-310.pyc
+#8 2.111 byte-compiling build/bdist.linux-x86_64/egg/megatron/text_generation/__init__.py to __init__.cpython-310.pyc
+#8 2.111 byte-compiling build/bdist.linux-x86_64/egg/megatron/text_generation/api.py to api.cpython-310.pyc
+#8 2.112 byte-compiling build/bdist.linux-x86_64/egg/megatron/text_generation/generation.py to generation.cpython-310.pyc
+#8 2.114 byte-compiling build/bdist.linux-x86_64/egg/megatron/p2p_communication.py to p2p_communication.cpython-310.pyc
+#8 2.115 byte-compiling build/bdist.linux-x86_64/egg/megatron/training.py to training.cpython-310.pyc
+#8 2.123 byte-compiling build/bdist.linux-x86_64/egg/megatron/text_generation_utils.py to text_generation_utils.cpython-310.pyc
+#8 2.126 byte-compiling build/bdist.linux-x86_64/egg/megatron/dist_signal_handler.py to dist_signal_handler.cpython-310.pyc
+#8 2.127 byte-compiling build/bdist.linux-x86_64/egg/megatron/memory.py to memory.cpython-310.pyc
+#8 2.128 byte-compiling build/bdist.linux-x86_64/egg/megatron/timers.py to timers.cpython-310.pyc
+#8 2.129 byte-compiling build/bdist.linux-x86_64/egg/megatron/arguments.py to arguments.cpython-310.pyc
+#8 2.138 byte-compiling build/bdist.linux-x86_64/egg/megatron/data/biencoder_dataset_utils.py to biencoder_dataset_utils.cpython-310.pyc
+#8 2.139 byte-compiling build/bdist.linux-x86_64/egg/megatron/data/dataset_utils.py to dataset_utils.cpython-310.pyc
+#8 2.143 byte-compiling build/bdist.linux-x86_64/egg/megatron/data/data_samplers.py to data_samplers.cpython-310.pyc
+#8 2.144 byte-compiling build/bdist.linux-x86_64/egg/megatron/data/ict_dataset.py to ict_dataset.cpython-310.pyc
+#8 2.146 byte-compiling build/bdist.linux-x86_64/egg/megatron/data/image_folder.py to image_folder.cpython-310.pyc
+#8 2.147 byte-compiling build/bdist.linux-x86_64/egg/megatron/data/autoaugment.py to autoaugment.cpython-310.pyc
+#8 2.149 byte-compiling build/bdist.linux-x86_64/egg/megatron/data/indexed_dataset.py to indexed_dataset.cpython-310.pyc
+#8 2.153 byte-compiling build/bdist.linux-x86_64/egg/megatron/data/realm_dataset_utils.py to realm_dataset_utils.cpython-310.pyc
+#8 2.154 byte-compiling build/bdist.linux-x86_64/egg/megatron/data/gpt_dataset.py to gpt_dataset.cpython-310.pyc
+#8 2.157 byte-compiling build/bdist.linux-x86_64/egg/megatron/data/realm_index.py to realm_index.cpython-310.pyc
+#8 2.159 byte-compiling build/bdist.linux-x86_64/egg/megatron/data/__init__.py to __init__.cpython-310.pyc
+#8 2.159 byte-compiling build/bdist.linux-x86_64/egg/megatron/data/bert_dataset.py to bert_dataset.cpython-310.pyc
+#8 2.161 byte-compiling build/bdist.linux-x86_64/egg/megatron/data/orqa_wiki_dataset.py to orqa_wiki_dataset.cpython-310.pyc
+#8 2.162 byte-compiling build/bdist.linux-x86_64/egg/megatron/data/blendable_dataset.py to blendable_dataset.cpython-310.pyc
+#8 2.163 byte-compiling build/bdist.linux-x86_64/egg/megatron/data/t5_dataset.py to t5_dataset.cpython-310.pyc
+#8 2.165 byte-compiling build/bdist.linux-x86_64/egg/megatron/data/vit_dataset.py to vit_dataset.cpython-310.pyc
+#8 2.167 byte-compiling build/bdist.linux-x86_64/egg/megatron/indexer.py to indexer.cpython-310.pyc
+#8 2.168 byte-compiling build/bdist.linux-x86_64/egg/megatron/model/biencoder_model.py to biencoder_model.cpython-310.pyc
+#8 2.170 byte-compiling build/bdist.linux-x86_64/egg/megatron/model/module.py to module.cpython-310.pyc
+#8 2.171 byte-compiling build/bdist.linux-x86_64/egg/megatron/model/vision/swin_backbone.py to swin_backbone.cpython-310.pyc
+#8 2.175 byte-compiling build/bdist.linux-x86_64/egg/megatron/model/vision/esvit_swin_backbone.py to esvit_swin_backbone.cpython-310.pyc
+#8 2.180 build/bdist.linux-x86_64/egg/megatron/model/vision/esvit_swin_backbone.py:729: SyntaxWarning: "is" with a literal. Did you mean "=="?
+#8 2.180   or pretrained_layers[0] is '*'
+#8 2.180 build/bdist.linux-x86_64/egg/megatron/model/vision/esvit_swin_backbone.py:788: SyntaxWarning: "is" with a literal. Did you mean "=="?
+#8 2.180   or (len(frozen_layers) > 0 and frozen_layers[0] is '*')
+#8 2.180 build/bdist.linux-x86_64/egg/megatron/model/vision/esvit_swin_backbone.py:799: SyntaxWarning: "is" with a literal. Did you mean "=="?
+#8 2.180   or (len(frozen_layers) > 0 and frozen_layers[0] is '*')
+#8 2.181 byte-compiling build/bdist.linux-x86_64/egg/megatron/model/vision/classification.py to classification.cpython-310.pyc
+#8 2.181 byte-compiling build/bdist.linux-x86_64/egg/megatron/model/vision/vit_backbone.py to vit_backbone.cpython-310.pyc
+#8 2.183 byte-compiling build/bdist.linux-x86_64/egg/megatron/model/vision/__init__.py to __init__.cpython-310.pyc
+#8 2.183 byte-compiling build/bdist.linux-x86_64/egg/megatron/model/vision/utils.py to utils.cpython-310.pyc
+#8 2.184 byte-compiling build/bdist.linux-x86_64/egg/megatron/model/vision/inpainting.py to inpainting.cpython-310.pyc
+#8 2.186 byte-compiling build/bdist.linux-x86_64/egg/megatron/model/vision/dino.py to dino.cpython-310.pyc
+#8 2.188 byte-compiling build/bdist.linux-x86_64/egg/megatron/model/vision/mit_backbone.py to mit_backbone.cpython-310.pyc
+#8 2.191 byte-compiling build/bdist.linux-x86_64/egg/megatron/model/vision/knn_monitor.py to knn_monitor.cpython-310.pyc
+#8 2.192 byte-compiling build/bdist.linux-x86_64/egg/megatron/model/multiple_choice.py to multiple_choice.cpython-310.pyc
+#8 2.193 byte-compiling build/bdist.linux-x86_64/egg/megatron/model/fused_softmax.py to fused_softmax.cpython-310.pyc
+#8 2.194 byte-compiling build/bdist.linux-x86_64/egg/megatron/model/classification.py to classification.cpython-310.pyc
+#8 2.195 byte-compiling build/bdist.linux-x86_64/egg/megatron/model/rotary_pos_embedding.py to rotary_pos_embedding.cpython-310.pyc
+#8 2.196 byte-compiling build/bdist.linux-x86_64/egg/megatron/model/enums.py to enums.cpython-310.pyc
+#8 2.196 byte-compiling build/bdist.linux-x86_64/egg/megatron/model/bert_model.py to bert_model.cpython-310.pyc
+#8 2.198 byte-compiling build/bdist.linux-x86_64/egg/megatron/model/rmsnorm.py to rmsnorm.cpython-310.pyc
+#8 2.199 byte-compiling build/bdist.linux-x86_64/egg/megatron/model/__init__.py to __init__.cpython-310.pyc
+#8 2.199 byte-compiling build/bdist.linux-x86_64/egg/megatron/model/language_model.py to language_model.cpython-310.pyc
+#8 2.202 byte-compiling build/bdist.linux-x86_64/egg/megatron/model/utils.py to utils.cpython-310.pyc
+#8 2.203 byte-compiling build/bdist.linux-x86_64/egg/megatron/model/fused_bias_gelu.py to fused_bias_gelu.cpython-310.pyc
+#8 2.203 byte-compiling build/bdist.linux-x86_64/egg/megatron/model/fused_layer_norm.py to fused_layer_norm.cpython-310.pyc
+#8 2.204 byte-compiling build/bdist.linux-x86_64/egg/megatron/model/distributed.py to distributed.cpython-310.pyc
+#8 2.205 byte-compiling build/bdist.linux-x86_64/egg/megatron/model/realm_model.py to realm_model.cpython-310.pyc
+#8 2.207 byte-compiling build/bdist.linux-x86_64/egg/megatron/model/t5_model.py to t5_model.cpython-310.pyc
+#8 2.208 byte-compiling build/bdist.linux-x86_64/egg/megatron/model/gpt_model.py to gpt_model.cpython-310.pyc
+#8 2.210 byte-compiling build/bdist.linux-x86_64/egg/megatron/model/transformer.py to transformer.cpython-310.pyc
+#8 2.219 byte-compiling build/bdist.linux-x86_64/egg/tools/retro/db/__init__.py to __init__.cpython-310.pyc
+#8 2.220 byte-compiling build/bdist.linux-x86_64/egg/tools/retro/db/dataset.py to dataset.cpython-310.pyc
+#8 2.221 byte-compiling build/bdist.linux-x86_64/egg/tools/retro/db/utils.py to utils.cpython-310.pyc
+#8 2.222 byte-compiling build/bdist.linux-x86_64/egg/tools/retro/db/build.py to build.cpython-310.pyc
+#8 2.225 byte-compiling build/bdist.linux-x86_64/egg/tools/retro/cli/cli.py to cli.cpython-310.pyc
+#8 2.228 byte-compiling build/bdist.linux-x86_64/egg/tools/retro/cli/__main__.py to __main__.cpython-310.pyc
+#8 2.228 byte-compiling build/bdist.linux-x86_64/egg/tools/retro/cli/__init__.py to __init__.cpython-310.pyc
+#8 2.229 byte-compiling build/bdist.linux-x86_64/egg/tools/retro/__init__.py to __init__.cpython-310.pyc
+#8 2.229 byte-compiling build/bdist.linux-x86_64/egg/tools/retro/external_libs.py to external_libs.cpython-310.pyc
+#8 2.230 byte-compiling build/bdist.linux-x86_64/egg/tools/retro/query/query.py to query.cpython-310.pyc
+#8 2.231 byte-compiling build/bdist.linux-x86_64/egg/tools/retro/query/retro_dataset.py to retro_dataset.cpython-310.pyc
+#8 2.233 byte-compiling build/bdist.linux-x86_64/egg/tools/retro/query/__init__.py to __init__.cpython-310.pyc
+#8 2.233 byte-compiling build/bdist.linux-x86_64/egg/tools/retro/query/chunk_dataset.py to chunk_dataset.cpython-310.pyc
+#8 2.234 byte-compiling build/bdist.linux-x86_64/egg/tools/retro/query/utils.py to utils.cpython-310.pyc
+#8 2.235 byte-compiling build/bdist.linux-x86_64/egg/tools/retro/utils.py to utils.cpython-310.pyc
+#8 2.235 byte-compiling build/bdist.linux-x86_64/egg/tools/retro/index/indexes/faiss_base.py to faiss_base.cpython-310.pyc
+#8 2.236 byte-compiling build/bdist.linux-x86_64/egg/tools/retro/index/indexes/faiss_par_add.py to faiss_par_add.cpython-310.pyc
+#8 2.238 byte-compiling build/bdist.linux-x86_64/egg/tools/retro/index/indexes/__init__.py to __init__.cpython-310.pyc
+#8 2.238 byte-compiling build/bdist.linux-x86_64/egg/tools/retro/index/__init__.py to __init__.cpython-310.pyc
+#8 2.239 byte-compiling build/bdist.linux-x86_64/egg/tools/retro/index/utils.py to utils.cpython-310.pyc
+#8 2.239 byte-compiling build/bdist.linux-x86_64/egg/tools/retro/index/build.py to build.cpython-310.pyc
+#8 2.242 byte-compiling build/bdist.linux-x86_64/egg/tools/retro/index/factory.py to factory.cpython-310.pyc
+#8 2.242 byte-compiling build/bdist.linux-x86_64/egg/tools/retro/index/index.py to index.cpython-310.pyc
+#8 2.242 byte-compiling build/bdist.linux-x86_64/egg/tools/retro/main.py to main.cpython-310.pyc
+#8 2.243 byte-compiling build/bdist.linux-x86_64/egg/tools/merge_datasets.py to merge_datasets.cpython-310.pyc
+#8 2.244 byte-compiling build/bdist.linux-x86_64/egg/tools/preprocess_data_nmt.py to preprocess_data_nmt.cpython-310.pyc
+#8 2.245 byte-compiling build/bdist.linux-x86_64/egg/tools/text_generation_cli.py to text_generation_cli.cpython-310.pyc
+#8 2.246 byte-compiling build/bdist.linux-x86_64/egg/tools/checkpoint_saver_megatron.py to checkpoint_saver_megatron.cpython-310.pyc
+#8 2.248 byte-compiling build/bdist.linux-x86_64/egg/tools/checkpoint_util.py to checkpoint_util.cpython-310.pyc
+#8 2.249 byte-compiling build/bdist.linux-x86_64/egg/tools/__init__.py to __init__.cpython-310.pyc
+#8 2.249 byte-compiling build/bdist.linux-x86_64/egg/tools/generate_samples_gpt.py to generate_samples_gpt.cpython-310.pyc
+#8 2.250 byte-compiling build/bdist.linux-x86_64/egg/tools/checkpoint_loader_megatron.py to checkpoint_loader_megatron.cpython-310.pyc
+#8 2.252 byte-compiling build/bdist.linux-x86_64/egg/tools/preprocess_data.py to preprocess_data.cpython-310.pyc
+#8 2.254 byte-compiling build/bdist.linux-x86_64/egg/tools/linter.py to linter.cpython-310.pyc
+#8 2.255 byte-compiling build/bdist.linux-x86_64/egg/tools/run_text_generation_server.py to run_text_generation_server.cpython-310.pyc
+#8 2.255 byte-compiling build/bdist.linux-x86_64/egg/tools/bert_embedding/embed.py to embed.cpython-310.pyc
+#8 2.257 byte-compiling build/bdist.linux-x86_64/egg/tools/bert_embedding/huggingface.py to huggingface.cpython-310.pyc
+#8 2.258 byte-compiling build/bdist.linux-x86_64/egg/tools/bert_embedding/__init__.py to __init__.cpython-310.pyc
+#8 2.258 byte-compiling build/bdist.linux-x86_64/egg/tools/bert_embedding/external_libs.py to external_libs.cpython-310.pyc
+#8 2.259 byte-compiling build/bdist.linux-x86_64/egg/tools/bert_embedding/dataset.py to dataset.cpython-310.pyc
+#8 2.259 byte-compiling build/bdist.linux-x86_64/egg/tools/bert_embedding/utils.py to utils.cpython-310.pyc
+#8 2.261 byte-compiling build/bdist.linux-x86_64/egg/tests/models/test_gpt_model.py to test_gpt_model.cpython-310.pyc
+#8 2.261 byte-compiling build/bdist.linux-x86_64/egg/tests/models/test_gpt_embedding.py to test_gpt_embedding.cpython-310.pyc
+#8 2.262 byte-compiling build/bdist.linux-x86_64/egg/tests/models/__init__.py to __init__.cpython-310.pyc
+#8 2.262 byte-compiling build/bdist.linux-x86_64/egg/tests/test_megatron.py to test_megatron.cpython-310.pyc
+#8 2.263 byte-compiling build/bdist.linux-x86_64/egg/tests/transformer/test_parallel_attention.py to test_parallel_attention.cpython-310.pyc
+#8 2.264 byte-compiling build/bdist.linux-x86_64/egg/tests/transformer/test_parallel_mlp.py to test_parallel_mlp.cpython-310.pyc
+#8 2.264 byte-compiling build/bdist.linux-x86_64/egg/tests/transformer/test_core_attention.py to test_core_attention.cpython-310.pyc
+#8 2.265 byte-compiling build/bdist.linux-x86_64/egg/tests/transformer/__init__.py to __init__.cpython-310.pyc
+#8 2.265 byte-compiling build/bdist.linux-x86_64/egg/tests/transformer/test_parallel_transformer_block.py to test_parallel_transformer_block.cpython-310.pyc
+#8 2.266 byte-compiling build/bdist.linux-x86_64/egg/tests/transformer/test_transformer_config.py to test_transformer_config.cpython-310.pyc
+#8 2.267 byte-compiling build/bdist.linux-x86_64/egg/tests/transformer/test_parallel_transformer_layer.py to test_parallel_transformer_layer.cpython-310.pyc
+#8 2.267 byte-compiling build/bdist.linux-x86_64/egg/tests/transformer/test_module.py to test_module.cpython-310.pyc
+#8 2.268 byte-compiling build/bdist.linux-x86_64/egg/tests/functional_tests/__init__.py to __init__.cpython-310.pyc
+#8 2.269 byte-compiling build/bdist.linux-x86_64/egg/tests/functional_tests/python_test_utils/get_test_results_from_tensorboard_logs.py to get_test_results_from_tensorboard_logs.cpython-310.pyc
+#8 2.269 byte-compiling build/bdist.linux-x86_64/egg/tests/functional_tests/python_test_utils/test_resume_checkpoint_pipeline.py to test_resume_checkpoint_pipeline.cpython-310.pyc
+#8 2.270 byte-compiling build/bdist.linux-x86_64/egg/tests/functional_tests/python_test_utils/__init__.py to __init__.cpython-310.pyc
+#8 2.270 byte-compiling build/bdist.linux-x86_64/egg/tests/functional_tests/python_test_utils/test_ci_pipeline.py to test_ci_pipeline.cpython-310.pyc
+#8 2.271 byte-compiling build/bdist.linux-x86_64/egg/tests/functional_tests/python_test_utils/check_slurm_job_completion.py to check_slurm_job_completion.cpython-310.pyc
+#8 2.272 byte-compiling build/bdist.linux-x86_64/egg/tests/__init__.py to __init__.cpython-310.pyc
+#8 2.272 byte-compiling build/bdist.linux-x86_64/egg/tests/unit_tests/test_utils.py to test_utils.cpython-310.pyc
+#8 2.273 byte-compiling build/bdist.linux-x86_64/egg/tests/unit_tests/__init__.py to __init__.cpython-310.pyc
+#8 2.273 byte-compiling build/bdist.linux-x86_64/egg/tests/unit_tests/test_parallel_state.py to test_parallel_state.cpython-310.pyc
+#8 2.274 byte-compiling build/bdist.linux-x86_64/egg/tests/unit_tests/test_basic.py to test_basic.cpython-310.pyc
+#8 2.275 byte-compiling build/bdist.linux-x86_64/egg/tests/unit_tests/test_utilities.py to test_utilities.cpython-310.pyc
+#8 2.275 byte-compiling build/bdist.linux-x86_64/egg/tests/conftest.py to conftest.cpython-310.pyc
+#8 2.276 byte-compiling build/bdist.linux-x86_64/egg/tests/run_megatron.py to run_megatron.cpython-310.pyc
+#8 2.276 byte-compiling build/bdist.linux-x86_64/egg/tests/pipeline_parallel/__init__.py to __init__.cpython-310.pyc
+#8 2.277 byte-compiling build/bdist.linux-x86_64/egg/tests/pipeline_parallel/test_schedules.py to test_schedules.cpython-310.pyc
+#8 2.281 creating build/bdist.linux-x86_64/egg/EGG-INFO
+#8 2.281 copying megatron_core.egg-info/PKG-INFO -> build/bdist.linux-x86_64/egg/EGG-INFO
+#8 2.282 copying megatron_core.egg-info/SOURCES.txt -> build/bdist.linux-x86_64/egg/EGG-INFO
+#8 2.282 copying megatron_core.egg-info/dependency_links.txt -> build/bdist.linux-x86_64/egg/EGG-INFO
+#8 2.282 copying megatron_core.egg-info/requires.txt -> build/bdist.linux-x86_64/egg/EGG-INFO
+#8 2.283 copying megatron_core.egg-info/top_level.txt -> build/bdist.linux-x86_64/egg/EGG-INFO
+#8 2.283 zip_safe flag not set; analyzing archive contents...
+#8 2.303 megatron.data.__pycache__.dataset_utils.cpython-310: module references __file__
+#8 2.308 megatron.fused_kernels.__pycache__.__init__.cpython-310: module references __file__
+#8 2.332 tools.__pycache__.checkpoint_loader_megatron.cpython-310: module references __file__
+#8 2.333 tools.__pycache__.checkpoint_saver_megatron.cpython-310: module references __file__
+#8 2.333 tools.__pycache__.generate_samples_gpt.cpython-310: module references __file__
+#8 2.333 tools.__pycache__.linter.cpython-310: module references __file__
+#8 2.333 tools.__pycache__.merge_datasets.cpython-310: module references __file__
+#8 2.334 tools.__pycache__.preprocess_data.cpython-310: module references __file__
+#8 2.334 tools.__pycache__.preprocess_data_nmt.cpython-310: module references __file__
+#8 2.335 tools.__pycache__.run_text_generation_server.cpython-310: module references __file__
+#8 2.341 creating dist
+#8 2.341 creating 'dist/megatron_core-0.2.0-py3.10.egg' and adding 'build/bdist.linux-x86_64/egg' to it
+#8 2.459 removing 'build/bdist.linux-x86_64/egg' (and everything under it)
+#8 2.482 Processing megatron_core-0.2.0-py3.10.egg
+#8 2.487 creating /usr/local/lib/python3.10/dist-packages/megatron_core-0.2.0-py3.10.egg
+#8 2.487 Extracting megatron_core-0.2.0-py3.10.egg to /usr/local/lib/python3.10/dist-packages
+#8 2.678 /usr/local/lib/python3.10/dist-packages/megatron_core-0.2.0-py3.10.egg/megatron/model/vision/esvit_swin_backbone.py:729: SyntaxWarning: "is" with a literal. Did you mean "=="?
+#8 2.678   or pretrained_layers[0] is '*'
+#8 2.679 /usr/local/lib/python3.10/dist-packages/megatron_core-0.2.0-py3.10.egg/megatron/model/vision/esvit_swin_backbone.py:788: SyntaxWarning: "is" with a literal. Did you mean "=="?
+#8 2.679   or (len(frozen_layers) > 0 and frozen_layers[0] is '*')
+#8 2.679 /usr/local/lib/python3.10/dist-packages/megatron_core-0.2.0-py3.10.egg/megatron/model/vision/esvit_swin_backbone.py:799: SyntaxWarning: "is" with a literal. Did you mean "=="?
+#8 2.679   or (len(frozen_layers) > 0 and frozen_layers[0] is '*')
+#8 2.758 Adding megatron-core 0.2.0 to easy-install.pth file
+#8 2.759 
+#8 2.759 Installed /usr/local/lib/python3.10/dist-packages/megatron_core-0.2.0-py3.10.egg
+#8 2.760 Processing dependencies for megatron-core==0.2.0
+#8 2.776 Searching for pybind11
+#8 2.776 Reading https://pypi.org/simple/pybind11/
+#8 3.206 /usr/lib/python3/dist-packages/pkg_resources/__init__.py:116: PkgResourcesDeprecationWarning:  is an invalid version and will not be supported in a future release
+#8 3.206   warnings.warn(
+#8 3.534 Downloading https://files.pythonhosted.org/packages/06/55/9f73c32dda93fa4f539fafa268f9504e83c489f460c380371d94296126cd/pybind11-2.11.1-py3-none-any.whl#sha256=33cdd02a6453380dd71cc70357ce388ad1ee8d32bd0e38fc22b273d050aa29b3
+#8 3.549 Best match: pybind11 2.11.1
+#8 3.549 Processing pybind11-2.11.1-py3-none-any.whl
+#8 3.556 Installing pybind11-2.11.1-py3-none-any.whl to /usr/local/lib/python3.10/dist-packages
+#8 3.572 Adding pybind11 2.11.1 to easy-install.pth file
+#8 3.573 Installing pybind11-config script to /usr/local/bin
+#8 3.574 
+#8 3.574 Installed /usr/local/lib/python3.10/dist-packages/pybind11-2.11.1-py3.10.egg
+#8 3.645 Searching for torch==2.1.2
+#8 3.645 Best match: torch 2.1.2
+#8 3.646 Adding torch 2.1.2 to easy-install.pth file
+#8 3.646 Installing convert-caffe2-to-onnx script to /usr/local/bin
+#8 3.647 Installing convert-onnx-to-caffe2 script to /usr/local/bin
+#8 3.647 Installing torchrun script to /usr/local/bin
+#8 3.647 
+#8 3.647 Using /usr/local/lib/python3.10/dist-packages
+#8 3.648 Searching for regex==2023.12.25
+#8 3.648 Best match: regex 2023.12.25
+#8 3.648 Adding regex 2023.12.25 to easy-install.pth file
+#8 3.649 
+#8 3.649 Using /usr/local/lib/python3.10/dist-packages
+#8 3.650 Searching for nvidia-cufft-cu12==11.0.2.54
+#8 3.650 Best match: nvidia-cufft-cu12 11.0.2.54
+#8 3.650 Adding nvidia-cufft-cu12 11.0.2.54 to easy-install.pth file
+#8 3.650 
+#8 3.650 Using /usr/local/lib/python3.10/dist-packages
+#8 3.651 Searching for nvidia-cudnn-cu12==8.9.2.26
+#8 3.651 Best match: nvidia-cudnn-cu12 8.9.2.26
+#8 3.651 Adding nvidia-cudnn-cu12 8.9.2.26 to easy-install.pth file
+#8 3.652 
+#8 3.652 Using /usr/local/lib/python3.10/dist-packages
+#8 3.652 Searching for nvidia-cublas-cu12==12.1.3.1
+#8 3.652 Best match: nvidia-cublas-cu12 12.1.3.1
+#8 3.653 Adding nvidia-cublas-cu12 12.1.3.1 to easy-install.pth file
+#8 3.653 
+#8 3.653 Using /usr/local/lib/python3.10/dist-packages
+#8 3.654 Searching for nvidia-cuda-runtime-cu12==12.1.105
+#8 3.654 Best match: nvidia-cuda-runtime-cu12 12.1.105
+#8 3.654 Adding nvidia-cuda-runtime-cu12 12.1.105 to easy-install.pth file
+#8 3.655 
+#8 3.655 Using /usr/local/lib/python3.10/dist-packages
+#8 3.655 Searching for fsspec==2023.10.0
+#8 3.655 Best match: fsspec 2023.10.0
+#8 3.655 Adding fsspec 2023.10.0 to easy-install.pth file
+#8 3.656 
+#8 3.656 Using /usr/local/lib/python3.10/dist-packages
+#8 3.657 Searching for Jinja2==3.1.3
+#8 3.657 Best match: Jinja2 3.1.3
+#8 3.657 Adding Jinja2 3.1.3 to easy-install.pth file
+#8 3.657 
+#8 3.657 Using /usr/local/lib/python3.10/dist-packages
+#8 3.658 Searching for nvidia-nccl-cu12==2.18.1
+#8 3.658 Best match: nvidia-nccl-cu12 2.18.1
+#8 3.658 Adding nvidia-nccl-cu12 2.18.1 to easy-install.pth file
+#8 3.659 
+#8 3.659 Using /usr/local/lib/python3.10/dist-packages
+#8 3.660 Searching for nvidia-cusolver-cu12==11.4.5.107
+#8 3.660 Best match: nvidia-cusolver-cu12 11.4.5.107
+#8 3.660 Adding nvidia-cusolver-cu12 11.4.5.107 to easy-install.pth file
+#8 3.660 
+#8 3.660 Using /usr/local/lib/python3.10/dist-packages
+#8 3.661 Searching for nvidia-cuda-cupti-cu12==12.1.105
+#8 3.661 Best match: nvidia-cuda-cupti-cu12 12.1.105
+#8 3.661 Adding nvidia-cuda-cupti-cu12 12.1.105 to easy-install.pth file
+#8 3.663 
+#8 3.663 Using /usr/local/lib/python3.10/dist-packages
+#8 3.663 Searching for typing-extensions==4.9.0
+#8 3.663 Best match: typing-extensions 4.9.0
+#8 3.663 Adding typing-extensions 4.9.0 to easy-install.pth file
+#8 3.663 
+#8 3.663 Using /usr/local/lib/python3.10/dist-packages
+#8 3.664 Searching for sympy==1.12
+#8 3.664 Best match: sympy 1.12
+#8 3.664 Adding sympy 1.12 to easy-install.pth file
+#8 3.665 Installing isympy script to /usr/local/bin
+#8 3.665 
+#8 3.665 Using /usr/local/lib/python3.10/dist-packages
+#8 3.666 Searching for nvidia-curand-cu12==10.3.2.106
+#8 3.666 Best match: nvidia-curand-cu12 10.3.2.106
+#8 3.666 Adding nvidia-curand-cu12 10.3.2.106 to easy-install.pth file
+#8 3.666 
+#8 3.666 Using /usr/local/lib/python3.10/dist-packages
+#8 3.667 Searching for nvidia-cuda-nvrtc-cu12==12.1.105
+#8 3.667 Best match: nvidia-cuda-nvrtc-cu12 12.1.105
+#8 3.667 Adding nvidia-cuda-nvrtc-cu12 12.1.105 to easy-install.pth file
+#8 3.668 
+#8 3.668 Using /usr/local/lib/python3.10/dist-packages
+#8 3.668 Searching for nvidia-cusparse-cu12==12.1.0.106
+#8 3.668 Best match: nvidia-cusparse-cu12 12.1.0.106
+#8 3.669 Adding nvidia-cusparse-cu12 12.1.0.106 to easy-install.pth file
+#8 3.669 
+#8 3.669 Using /usr/local/lib/python3.10/dist-packages
+#8 3.670 Searching for filelock==3.13.1
+#8 3.670 Best match: filelock 3.13.1
+#8 3.670 Adding filelock 3.13.1 to easy-install.pth file
+#8 3.670 
+#8 3.670 Using /usr/local/lib/python3.10/dist-packages
+#8 3.671 Searching for nvidia-nvtx-cu12==12.1.105
+#8 3.671 Best match: nvidia-nvtx-cu12 12.1.105
+#8 3.671 Adding nvidia-nvtx-cu12 12.1.105 to easy-install.pth file
+#8 3.672 
+#8 3.672 Using /usr/local/lib/python3.10/dist-packages
+#8 3.673 Searching for networkx==3.2.1
+#8 3.673 Best match: networkx 3.2.1
+#8 3.673 Adding networkx 3.2.1 to easy-install.pth file
+#8 3.673 
+#8 3.673 Using /usr/local/lib/python3.10/dist-packages
+#8 3.674 Searching for triton==2.1.0
+#8 3.674 Best match: triton 2.1.0
+#8 3.674 Adding triton 2.1.0 to easy-install.pth file
+#8 3.675 
+#8 3.675 Using /usr/local/lib/python3.10/dist-packages
+#8 3.675 Searching for MarkupSafe==2.1.3
+#8 3.675 Best match: MarkupSafe 2.1.3
+#8 3.675 Adding MarkupSafe 2.1.3 to easy-install.pth file
+#8 3.676 
+#8 3.676 Using /usr/local/lib/python3.10/dist-packages
+#8 3.677 Searching for nvidia-nvjitlink-cu12==12.3.101
+#8 3.677 Best match: nvidia-nvjitlink-cu12 12.3.101
+#8 3.677 Adding nvidia-nvjitlink-cu12 12.3.101 to easy-install.pth file
+#8 3.677 
+#8 3.677 Using /usr/local/lib/python3.10/dist-packages
+#8 3.678 Searching for mpmath==1.3.0
+#8 3.678 Best match: mpmath 1.3.0
+#8 3.678 Adding mpmath 1.3.0 to easy-install.pth file
+#8 3.679 
+#8 3.679 Using /usr/local/lib/python3.10/dist-packages
+#8 3.679 Finished processing dependencies for megatron-core==0.2.0
+#8 DONE 4.6s
+
+#9 exporting to image
+#9 exporting layers
+#9 exporting layers 4.0s done
+#9 writing image sha256:16592d9bb5b3a3c8ecf5246f84ddce5aa3439a4f941ab221b44da1d1fd80996a 0.0s done
+#9 naming to nikawang.azurecr.io/deepspeed-pretrain-megatron 0.0s done
+#9 DONE 4.0s

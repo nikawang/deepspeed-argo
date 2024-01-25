@@ -48,4 +48,6 @@ RUN chmod 600 /root/.ssh/id_rsa && chmod 600 /root/.ssh/authorized_keys  && chmo
 
 COPY .netrc /root/.netrc
 
+RUN git clone https://github.com/NVIDIA/apex.git &&  cd apex && python setup.py install --cuda_ext 
+
 EXPOSE 22

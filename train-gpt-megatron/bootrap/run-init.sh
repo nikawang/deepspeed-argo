@@ -16,12 +16,12 @@ xz -d oscar-1GB.jsonl.xz
 
 cd -
 python tools/preprocess_data.py \
-       --input ./dataset/oscar-1GB.jsonl \
-       --output-prefix my-gpt2 \
-       --vocab-file ./dataset/gpt2-vocab.json \
+       --input ../dataset/gpt2/oscar-1GB.jsonl \
+       --output-prefix ./dataset/gpt2/my-gpt2 \
+       --vocab-file ../dataset/gpt2/gpt2-vocab.json \
        --dataset-impl mmap \
        --tokenizer-type GPT2BPETokenizer \
-       --merge-file ./dataset/gpt2-merges.txt \
+       --merge-file ../dataset/gpt2/gpt2-merges.txt \
        --append-eod --workers 8
 
 cp my-gpt2* ./dataset

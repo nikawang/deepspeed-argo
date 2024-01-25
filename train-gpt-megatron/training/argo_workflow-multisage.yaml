@@ -1,0 +1,415 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: ds-megatron-training-
+spec:
+  entrypoint: ds-megatron-training-workflow
+  templates:
+  - name: ds-megatron-training-workflow
+    steps:
+    - - name: init-env
+        template: init-env
+    - - name: create-deepspeed-resources
+        template: create-deepspeed-resources
+    - - name: detect-pods-fqdn
+        template: detect-pods-fqdn
+    - - name: run-deepspeed-training
+        template: run-deepspeed-training
+        arguments:
+          artifacts:
+          - name: hostfile
+            from: "{{steps.detect-pods-fqdn.outputs.artifacts.hostfile}}"
+  - name: init-env
+    volumes:
+    - name: workdir
+      persistentVolumeClaim:
+        claimName: workdir
+    - name: dataset
+      persistentVolumeClaim:
+        claimName: dataset
+    container:
+      volumeMounts:
+      - name: workdir
+        mountPath: /app/workdir
+      - name: dataset
+        mountPath: /app/dataset
+      image: nikawang.azurecr.io/deepspeed-base:v9
+      env:
+      - name: ARGO_WORKFLOW_NAME
+        value: "{{workflow.name}}"
+      command: ["sh"]
+      args:
+      - -c 
+      - |
+        set -ex
+        mkdir -p /app/workdir/$ARGO_WORKFLOW_NAME/dataset
+        ls -l /app/dataset/gpt-2/
+        sleep 10
+        cp -r /app/dataset/gpt-2/*  /app/workdir/$ARGO_WORKFLOW_NAME/dataset
+
+        cd Megatron-DeepSpeed/
+        python tools/preprocess_data.py --input /app/workdir/$ARGO_WORKFLOW_NAME/dataset/oscar-1GB.jsonl  --output-prefix /app/workdir/$ARGO_WORKFLOW_NAME/dataset/my-gpt2  --vocab-file /app/workdir/$ARGO_WORKFLOW_NAME/dataset/gpt2-vocab.json   --dataset-impl mmap   --tokenizer-type GPT2BPETokenizer  --merge-file /app/workdir/$ARGO_WORKFLOW_NAME/dataset/gpt2-merges.txt   --append-eod --workers 8
+    tolerations:
+    - effect: NoSchedule
+      key: kubernetes.azure.com/scalesetpriority
+      operator: Equal
+      value: spot
+    - key: "sku"
+      operator: "Equal"
+      value: "gpu"
+      effect: "NoSchedule"
+    nodeSelector:
+      agentpool: gpua1002
+  - name: create-deepspeed-resources
+    resource:
+      action: apply
+      manifest: |
+        apiVersion: apps/v1
+        kind: Deployment
+        metadata:
+          name: deepspeed-deployment
+        spec:
+          replicas: 1
+          selector:
+            matchLabels:
+              app: deepspeed
+          template:
+            metadata:
+              labels:
+                app: deepspeed
+            spec:
+              tolerations:
+              - effect: NoSchedule
+                key: kubernetes.azure.com/scalesetpriority
+                operator: Equal
+                value: spot
+              - key: "sku"
+                operator: "Equal"
+                value: "gpu"
+                effect: "NoSchedule"
+              nodeSelector:
+                agentpool: gpua1002
+              containers:
+              - name: deepspeed-container
+                image: nikawang.azurecr.io/deepspeed-base:v9
+                env:
+                - name: ARGO_WORKFLOW_NAME
+                  value: "{{workflow.name}}"
+                command: ["sh"]
+                args: 
+                - -c
+                - /usr/sbin/sshd -D
+                ports:
+                - containerPort: 22
+                  name: ssh
+                resources:
+                  requests:
+                    nvidia.com/gpu: 2
+                  limits:
+                    nvidia.com/gpu: 2
+                volumeMounts:
+                - mountPath: /dev/shm
+                  name: dshm
+                - name: workdir
+                  mountPath: /app/workdir
+                - name: dataset
+                  mountPath: /app/dataset
+              volumes:
+              - name: dshm
+                emptyDir:
+                  medium: Memory
+                  sizeLimit: "1Gi" 
+              - name: workdir
+                persistentVolumeClaim:
+                  claimName: workdir
+              - name: dataset
+                persistentVolumeClaim:
+                  claimName: dataset
+  - name: detect-pods-fqdn
+    container:
+      image: alpine/k8s:1.18.2
+      command: [sh]
+      args: 
+      - -c
+      - |
+        apk add --no-cache curl jq
+        STATEFULSET_NAME="deepspeed-deployment"
+        NAMESPACE=$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace)
+        while true; do
+          RUNNING_PODS=$(kubectl get pods -l app=deepspeed -n ${NAMESPACE} -o jsonpath='{.items[?(@.status.phase=="Running")].metadata.name}')
+          TOTAL_PODS=$(kubectl get deployment ${STATEFULSET_NAME} -n ${NAMESPACE} -o jsonpath='{.status.replicas}')
+          RUNNING_COUNT=$(echo ${RUNNING_PODS} | wc -w)
+          if [ "${RUNNING_COUNT}" -eq "${TOTAL_PODS}" ]; then
+            echo "所有 Pods 都处于 Running 状态。"
+            break
+          else
+            echo "等待所有 Pods 都变为 Running 状态..."
+            sleep 5
+          fi
+        done
+        kubectl get pods -l app=deepspeed -o jsonpath='{.items[*].status.podIP}' | tr -s '[[:space:]]' '\n' | awk '{print $1 " slots=2"}' > /tmp/hostfile
+        cat /tmp/hostfile
+    outputs:
+      artifacts:
+      - name: hostfile
+        path: /tmp/hostfile
+  - name: run-deepspeed-training
+    inputs:
+      artifacts:
+      - name: hostfile
+        path: /tmp/hostfile
+    volumes:
+    - name: dshm
+      emptyDir:
+        medium: Memory
+        sizeLimit: "1Gi" 
+    - name: workdir
+      persistentVolumeClaim:
+        claimName: workdir
+    - name: dataset
+      persistentVolumeClaim:
+        claimName: dataset
+    container:
+      volumeMounts:
+      - mountPath: /dev/shm
+        name: dshm
+      - name: workdir
+        mountPath: /app/workdir
+      - name: dataset
+        mountPath: /app/dataset
+      image: nikawang.azurecr.io/deepspeed-base:v9
+      env:
+      - name: ARGO_WORKFLOW_NAME
+        value: "{{workflow.name}}"
+      resources:
+        requests:
+          nvidia.com/gpu: 2
+        limits:
+          nvidia.com/gpu: 2
+      command: ["sh"]
+      args:
+      - -c 
+      - |
+        set -ex
+        SLOTS=2
+        LOCALIP=$(ip addr show eth0 | grep "inet\b" | awk '{print $2}' | cut -d/ -f1)
+        # LOCALIP=localhost
+        echo "${LOCALIP} slots=${SLOTS}" | cat - /tmp/hostfile > /tmp/temp_hostfile
+        cat /tmp/temp_hostfile
+        echo "start sshd"
+        /usr/sbin/sshd
+        sleep 10
+        NODE_NUM=0
+        while IFS= read -r line
+        do  
+            # 使用 awk 提取 IP 地址（假设 IP 地址在行的开头）
+            IP=$(echo $line | awk '{print $1}')
+            echo "Prepare $IP"
+            # 执行 ssh-keyscan 并追加到 known_hosts 文件
+            ssh-keyscan -H $IP >> /root/.ssh/known_hosts
+            
+            # 检查 ssh-keyscan 命令是否成功执行
+            if [ $? -eq 0 ]; then
+                echo "Added $IP to known_hosts."
+            else
+                echo "Failed to add $IP to known_hosts."
+            fi
+          NODE_NUM=$((NODE_NUM + 1))
+        done < "/tmp/temp_hostfile"
+        echo "All IPs have been processed."
+        GNODES=$((NODE_NUM * SLOTS))
+        
+        cd /app/Megatron-DeepSpeed
+        DATA_SET_PATH=/app/dataset/
+        BASE_PATH=/app/workdir/${ARGO_WORKFLOW_NAME}/dataset
+        ls -rlth $BASE_PATH
+        # tail -f /dev/null
+        DATA_PATH=$BASE_PATH/my-gpt2_text_document
+        DS_CONFIG=ds_config.json
+
+        # Hostfile path
+        HF=/tmp/temp_hostfile 
+
+        # Disabling tensor/pipeline parallelism
+        TP=1
+        PP=1
+
+        # HEADS ~= HIDDEN/128
+
+        # Model: 7B
+        NLAYERS=40
+        HIDDEN=4096
+        HEADS=16
+        SEQ=1024
+
+
+        MICRO_BATCH=4
+        NODES=$NODE_NUM
+        GPN=$SLOTS
+        GLOBAL_BATCH=$(( ${GPN} * ${MICRO_BATCH} * ${NODES} ))
+        # GLOBAL_BATCH=8
+        # Initial power scale for loss
+        SP=15
+
+        # Uncomment/comment one of the following blocks.
+
+        # For 1T model, start with microbatch=1, try to get 2 and 4.  If OOM w/ 4, use cpu-offloading
+
+        # Set to cpu for offloading to cpu for larger models
+        OFFLOAD_DEVICE="cpu"
+        CPU_OPTIM=" --cpu-optimizer"
+
+        # Set to none and empty string for no cpu offloading
+        #OFFLOAD_DEVICE="none"  
+        #CPU_OPTIM=" "
+
+        ZERO_STAGE=3
+        OUTPUT_DIR=$BASE_PATH/ds_z_off-${OFFLOAD_DEVICE}_stage_${ZERO_STAGE}_nl${NLAYERS}_hs${HIDDEN}_mb${MICRO_BATCH}_seq${SEQ}_gb${GLOBAL_BATCH}_nodes${NODES}
+        #OUTPUT_DIR=ds_z_off-${OFFLOAD_DEVICE}_stage_${ZERO_STAGE}_nl${NLAYERS}_hs${HIDDEN}_mb${MICRO_BATCH}_seq${SEQ}_gb${GLOBAL_BATCH}_nodes${NODES}
+        #OUTPUT_DIR=baseline_nl${NLAYERS}_hs${HIDDEN}_gb${GLOBAL_BATCH}_mb${MICRO_BATCH}
+        mkdir -p $OUTPUT_DIR
+
+        cat <<EOT > $DS_CONFIG
+        {
+          "train_batch_size" : $GLOBAL_BATCH,
+          "train_micro_batch_size_per_gpu": $MICRO_BATCH,
+          "steps_per_print": 1,
+          "gradient_accumulation_steps": 1,
+          "zero_optimization": {
+            "stage": 3,
+            "stage3_max_live_parameters": 3e9,
+            "stage3_max_reuse_distance": 3e9,
+            "stage3_param_persistence_threshold": 1e5,
+            "stage3_prefetch_bucket_size": 5e7,
+            "contiguous_gradients": true,
+            "overlap_comm": true,
+            "reduce_bucket_size": 90000000,
+            "sub_group_size": 1e9,
+            "offload_optimizer": {
+              "device": "$OFFLOAD_DEVICE",
+              "buffer_count": 4,
+              "pipeline_read": false,
+              "pipeline_write": false,
+              "pin_memory": true
+            }
+          },
+          "gradient_clipping": 1.0,
+          "fp16": {
+            "enabled": true,
+            "initial_scale_power" : $SP,
+            "loss_scale_window": 1000,
+            "hysteresis": 2,
+            "min_loss_scale": 1
+          },
+          "wall_clock_breakdown": true,
+          "zero_allow_untested_optimizer": false,
+          "aio": {
+            "block_size": 1048576,
+            "queue_depth": 16,
+            "single_submit": false,
+            "overlap_events": true,
+            "thread_count": 2
+          }
+        }
+        EOT
+
+        while IFS= read -r line
+        do  
+          # 使用 awk 提取 IP 地址（假设 IP 地址在行的开头）
+          IP=$(echo $line | awk '{print $1}')
+          scp /app/Megatron-DeepSpeed/ds_config.json root@$IP:/app/Megatron-DeepSpeed/ds_config.json
+          scp /tmp/temp_hostfile root@$IP:/tmp/temp_hostfile
+        done < "/tmp/temp_hostfile"
+
+        export NCCL_DEBUG=warn 
+
+        ds_args=" "
+        ds_args=" --deepspeed ${ds_args}"
+        ds_args=" --no-pipeline-parallel ${ds_args}" 
+        ds_args=" --deepspeed_config=$DS_CONFIG ${ds_args}"
+        ds_args=" --zero-stage=$ZERO_STAGE ${ds_args}"
+        ds_args=" --deepspeed-activation-checkpointing ${ds_args}"
+        deepspeed --force_multi --num_nodes=$NODES --hostfile $HF pretrain_gpt.py \
+              --tensor-model-parallel-size $TP \
+              --pipeline-model-parallel-size $PP \
+              --num-layers $NLAYERS \
+              --hidden-size $HIDDEN \
+              --num-attention-heads $HEADS \
+              --seq-length $SEQ \
+              --loss-scale $SP \
+              --max-position-embeddings $SEQ \
+              --micro-batch-size $MICRO_BATCH \
+              --global-batch-size $GLOBAL_BATCH \
+              --train-iters 1000 \
+              --lr 6.0e-5 \
+              --min-lr 6.0e-6 \
+              --lr-decay-style cosine \
+              --log-interval 1 \
+              --eval-iters 40 \
+              --eval-interval 1000 \
+              --data-path $DATA_PATH \
+              --vocab-file $BASE_PATH/gpt2-vocab.json \
+              --merge-file $BASE_PATH/gpt2-merges.txt \
+              --save-interval 1000 \
+              --split 98,2,0 \
+              --clip-grad 1.0 \
+              --weight-decay 0.1 \
+              --adam-beta1 0.9 \
+              --adam-beta2 0.95 \
+              --init-method-std 0.006 \
+              --fp16 \
+              --checkpoint-activations \
+              --tensorboard-dir $OUTPUT_DIR \
+              $CPU_OPTIM $ds_args \
+              --exit-interval 5000 | tee ${OUTPUT_DIR}/output.log
+        # max_retries=1
+        # count=0
+        # while [ $count -le $max_retries ]; do
+        #     # 使用 nohup 在后台运行命令，并将输出重定向到日志文件
+        #     nohup bash -c "$deepspeed_cmd; echo \$? > ret_code.txt" > output.log 2>&1 &
+            
+        #     # 获取后台进程的 PID
+        #     pid=$!
+            
+        #     # 等待后台进程结束
+        #     wait $pid
+            
+        #     # 读取命令的退出状态
+        #     ret_code=$(cat ret_code.txt)
+            
+        #     if [ $ret_code -eq 0 ]; then
+        #         echo "Deepspeed 命令执行成功"
+        #         break
+        #     else
+        #         echo "Deepspeed 命令执行失败，退出代码为 $ret_code"
+        #         count=$((count+1))
+        #         if [ $count -le $max_retries ]; then
+        #             echo "正在尝试第 $count 次重试..."
+        #         else
+        #             echo "达到最大重试次数 $max_retries，停止重试"
+        #             break
+        #         fi
+        #     fi
+        # done
+        echo "Exited"
+        # tail -f /dev/null
+    tolerations:
+    - effect: NoSchedule
+      key: kubernetes.azure.com/scalesetpriority
+      operator: Equal
+      value: spot
+    - key: "sku"
+      operator: "Equal"
+      value: "gpu"
+      effect: "NoSchedule"
+    nodeSelector:
+      agentpool: gpua1002
+  - name: exit-handler
+    steps:
+    - - name: delete-deepspeed-resources
+        template: delete-deepspeed-resources
+  - name: delete-deepspeed-resources
+    container:
+      image: alpine/k8s:1.18.2
+      command: [sh, -c]
+      args: ["kubectl -n argo delete deployment deepspeed-deployment"]

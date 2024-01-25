@@ -1,0 +1,31 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: prtrain-gpt-megatron-
+spec:
+  entrypoint: prtrain-gpt-megatron
+  templates:
+  - name: prtrain-gpt-megatron
+    steps:
+    - - name: run-deepspeed-training
+        template: run-deepspeed-training
+  - name: run-deepspeed-training
+    container:
+      image: nikawang.azurecr.io/deepspeed-bert:v1
+      command: ["sh"]
+      args:
+      - -c 
+      - |
+        tail -f /dev/null
+        #deepspeed --hostfile=/tmp/temp_hostfile train-bert.py --checkpoint_dir ./chk 
+    tolerations:
+    - effect: NoSchedule
+      key: kubernetes.azure.com/scalesetpriority
+      operator: Equal
+      value: spot
+    - key: "sku"
+      operator: "Equal"
+      value: "gpu"
+      effect: "NoSchedule"
+    nodeSelector:
+      agentpool: gpua1002
